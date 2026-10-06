@@ -1,25 +1,230 @@
-import logo from './logo.svg';
+import { useState } from "react";
+import DgsaNavbar from "./assets/components/navbar";
 import './App.css';
+import tournamentPoster from "./assets/images/image1.png";
+import eventImageTwo from "./assets/images/image2.png";
+import eventImageThree from "./assets/images/image3.png";
+import dgsaLogo from "./assets/images/discgolf_logo.png";
 
-function App() {
+/*Data Given for the App from the figma file*/
+const Events = [
+  {
+    id: 1,
+    title: "South Africa Open",
+    location: "Inanda Disc Golf Course, Kylami",
+    date: "12th June",
+    time: "07:00 AM",
+    image: tournamentPoster,
+  },
+  {
+    id: 2,
+    title: "Ladies and Mens Doubles",
+    location: "Inanda Disc Golf Course, Kylami",
+    date: "13-14 Jun",
+    time: "7:00",
+    image: eventImageTwo,
+  },
+    {
+    id: 3,
+    title: "Ladies' Singles",
+    location: "Inanda Disc Golf Course, Kylami",
+    date: "24 Jun",
+    time: "10:00",
+    image: eventImageThree,
+  },
+];
+
+const FAQS = [
+  { id: 1, question: "Where can I play?", answer: "" },
+  { id: 2, question: "What is Disc Golf?", answer: "" },
+  { id: 3, question: "Why should I become a DGSA member", answer: "" },
+  { id: 4, question: "Can i play if I’ve played before?", answer: "" },
+];
+
+/*Components for the App*/
+
+function Hero() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section id="home" className="hero">
+      <div className="hero_text">
+        <p className="hero_welcome">Welcome to</p>
+        <h1 className="hero_title">Disc Golf South Africa</h1>
+      </div>
+      <p className="hero_tagline">
+        Discover your new <br /> favourite hobby
+      </p>
+    </section>
   );
 }
 
-export default App;
+function Tournament() {
+  return (
+    <section id="tournament" className="section">
+      <h2 className="section_title">Tournament</h2>
+
+      <article className="tournament">
+        <img
+          className="tournament_poster"
+          src={tournamentPoster}
+          alt="1st PDGA African Disc Golf Championship poster"
+        />
+
+        <div className="tournament_info">
+          <h3 className="tournament_title">1st African Disc Golf Championship</h3>
+
+          <p>
+            Disc Golf South Africa, the PDGA's country partner, will host the
+            inaugural PDGA African Disc Golf Championship at Inanda Disc Golf
+            Course in Kyalami, Johannesburg. Top African players will compete
+            for the title of 'African Champion,' awarded to the
+            highest-finishing African athletes in the MPO and FPO divisions.
+          </p>
+
+          <p>
+            PDGA Website:{" "}
+            <a
+              href="https://www.pdga.com/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              1st PDGA African Disc Golf Championship
+            </a>
+          </p>
+
+          <ul className="tournament_details">
+            <li>Fri-Sun, November 6-8, 2026</li>
+            <li>Inanda Country Base, Kyalami</li>
+            <li>PDGA C-Tier</li>
+          </ul>
+
+          <button className="disc-button-tournament" type="button">
+            Join the tournament
+          </button>
+        </div>
+      </article>
+    </section>
+  );
+}
+
+function UpcomingEvents() {
+  const [start, setStart] = useState(0);
+  const visible = 3;
+  const canPrev = start > 0;
+  const canNext = start + visible < Events.length;
+
+  return (
+    <section className="section">
+      <h2 className="section_title">Upcoming Events</h2>
+
+      <div className="carousel">
+        <button
+          className="disc-button-upcoming-events"
+          type="button"
+          aria-label="Previous events"
+          disabled={!canPrev}
+          onClick={() => setStart((s) => s - 1)}
+        >
+          ‹
+        </button>
+
+        <div className="carousel_track">
+          {Events.slice(start, start + visible).map((event) => (
+            <article key={event.id} className="event-card">
+              <img src={event.image} alt={event.title} />
+              <div className="event-card__body">
+                <div>
+                  <h3>{event.title}</h3>
+                  <p>{event.location}</p>
+                </div>
+                <div className="event-card_when">
+                  <strong>{event.date}</strong>
+                  <strong>{event.time}</strong>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <button
+          className="disc-button-upcoming-events"
+          type="button"
+          aria-label="Next events"
+          disabled={!canNext}
+          onClick={() => setStart((s) => s + 1)}
+        >
+          ›
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function Faq() {
+  const [openId, setOpenId] = useState(null);
+
+  return (
+    <section id="faq" className="section">
+      <h2 className="section__title">FAQ Accordion</h2>
+
+      <div className="faq">
+        {FAQS.map(({ id, question, answer }) => {
+          const isOpen = openId === id;
+          return (
+            <div key={id} className={`faq__item ${isOpen ? "is-open" : ""}`}>
+              <button
+                className="disc-button-faq"
+                type="button"
+                aria-expanded={isOpen}
+                onClick={() => setOpenId(isOpen ? null : id)}
+              >
+                {question}
+                <span className="faq__chevron" aria-hidden="true">⌄</span>
+              </button>
+              {isOpen && <p className="faq__answer">{answer}</p>}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="footer">
+      <ul className="footer__links">
+        <li><a href="#home">Home page</a></li>
+        <li><a href="#faq">FAQ Accordion</a></li>
+        <li><a href="#tournament">Tournament &amp; Event</a></li>
+      </ul>
+
+      <div className="footer__contact">
+        <a href="mailto:info@discgolfsa.org">info@discgolfsa.org</a>
+        <a href="tel:0794917034">079 491 7034</a>
+      </div>
+
+      <img
+        className="footer__logo"
+        src={dgsaLogo}
+        alt="Disc Golf South Africa"
+      />
+    </footer>
+  );
+}
+
+/* MAIN PAGE*/
+
+export default function App() {
+  return (
+    <>
+      <DgsaNavbar />
+      <main>
+        <Hero />
+        <Tournament />
+        <UpcomingEvents />
+        <Faq />
+      </main>
+      <Footer />
+    </>
+  );
+}
