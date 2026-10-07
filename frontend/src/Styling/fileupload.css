@@ -1,0 +1,16 @@
+.regplayerUploadFile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 110px;
+  padding: 10px;
+  border: 2px dashed rgba(255, 255, 255, 0.45);
+  border-radius: 16px;
+  text-align: center;
+}
+.regplayerUploadDragFile { border-color: #ff9a00; background: rgba(255, 154, 0, 0.08); }
+.regplayerUploadErrorFile { border-color: #ff6b6b; }
+.regplayerUploadHintFile { margin: 0; font-size: 0.8rem; color: rgba(255, 255, 255, 0.8); }
+.regplayerUploadErrorMessageFile { margin-top: 4px; color: #ff6b6b; font-size: 0.8rem; }

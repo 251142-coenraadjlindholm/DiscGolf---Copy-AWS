@@ -124,10 +124,14 @@ button { font: inherit; cursor: pointer; }
   gap: 1.5rem;
   padding: 1rem;
   background: rgba(8, 51, 125, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    inset 0 0 1rem rgba(255, 255, 255, 0.12),
+    0 0 0.75rem rgba(255, 255, 255, 0.14);
 }
-.tournament_poster { border-radius: 1rem; width: 100%; height: 100%; object-fit: cover; }
+.tournament_poster { border-radius: 0.5rem; width: 100%; height: 100%; object-fit: cover; }
 .tournament_info { display: flex; flex-direction: column; gap: 1rem; }
 .tournament_title {
   font-family: var(--font-display);
@@ -194,7 +198,16 @@ button { font: inherit; cursor: pointer; }
 
 /*FAQ*/
 .faq { max-width: 36rem; margin: 0 auto; display: grid; gap: 0.75rem; }
-.faq__item { background: rgba(8, 51, 125, 0.25); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.6rem; }
+.faq__item {
+  overflow: hidden;
+  background: rgba(8, 51, 125, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 0.6rem;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    inset 0 0 1rem rgba(255, 255, 255, 0.12),
+    0 0 0.75rem rgba(255, 255, 255, 0.14);
+}
 .disc-button-faq {
   width: 100%;
   display: flex;
@@ -204,7 +217,6 @@ button { font: inherit; cursor: pointer; }
   background: none;
   border: 0;
   border-radius: 0;
-  padding: 0.8rem 1rem;
   color: var(--white);
   font-family: inherit;
   font-size: inherit;
@@ -215,7 +227,15 @@ button { font: inherit; cursor: pointer; }
 }
 .faq__chevron { transition: transform 0.2s; }
 .faq__item.is-open .faq__chevron { transform: rotate(180deg); }
-.faq__answer { padding: 0 1rem 1rem; }
+.faq__answer {
+  margin: 0;
+  padding: 0.9rem 1rem 1.1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--mist);
+  font-size: var(--body-sm);
+  line-height: 1.6;
+  white-space: pre-line;
+}
 
 /*Footer*/
 .footer {

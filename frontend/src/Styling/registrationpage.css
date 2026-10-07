@@ -1,0 +1,12 @@
+.regplayerChoicePage { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; }
+.regplayerChoiceLabelPage { margin-right: 4px; }
+.regplayerChoicePage .form-check { margin-right: 0; }
+.regplayerChoicePage .form-check-input {
+  background-color: transparent;
+  border-color: rgba(255, 255, 255, 0.6);
+}
+.regplayerChoicePage .form-check-input:checked {
+  background-color: #ff9a00;
+  border-color: #ff9a00;
+}
+.regplayerChoicePage .form-check-input:focus { box-shadow: 0 0 0 0.2rem rgba(255, 154, 0, 0.35); }

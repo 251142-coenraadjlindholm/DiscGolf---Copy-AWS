@@ -1,0 +1,16 @@
+.regplayerPaymentHeadingPage {
+  margin: 0 0 8px;
+  font-family: var(--reg-font-display);
+  font-size: 2.4rem;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.regplayerPaymentDetailsPage { margin: 0; font-size: 0.8rem; }
+.regplayerPaymentDetailsPage div { display: flex; gap: 6px; }
+.regplayerPaymentDetailsPage dt { font-weight: 600; }
+.regplayerPaymentDetailsPage dd { margin: 0; }
+
+.regplayerPaymentAmountPage { display: flex; flex-direction: column; align-items: flex-end; }
+.regplayerPaymentAmountLabelPage { font-family: var(--reg-font-display); font-size: 1.1rem; font-weight: 700; }
+.regplayerPaymentAmountValuePage { font-family: var(--reg-font-display); font-size: 2.6rem; font-weight: 800; color: #ff9a00; }

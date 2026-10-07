@@ -1,9 +1,15 @@
 import { useState } from "react";
+import { BrowserRouter, Link, Route, Routes, useNavigate } from "react-router-dom";
 import DgsaNavbar from "./assets/components/navbar";
+import RegistrationFlow from "./assets/components/registrationflow";
 import './App.css';
 import tournamentPoster from "./assets/images/image1.png";
 import eventImageTwo from "./assets/images/image2.png";
 import eventImageThree from "./assets/images/image3.png";
+import eventImageFour from "./assets/images/image4.png";
+import eventImageFive from "./assets/images/image5.png";
+import eventImageSix from "./assets/images/image6.png";
+import tournamenthighlight from "./assets/images/Highlight Image.png";
 import dgsaLogo from "./assets/images/discgolf_logo.png";
 
 /*Data Given for the App from the figma file*/
@@ -32,13 +38,57 @@ const Events = [
     time: "10:00",
     image: eventImageThree,
   },
+     {
+    id: 4,
+    title: "Gauteng Open",
+    location: "Inanda Disc Golf Course, Kylami",
+    date: "10 Oct",
+    time: "07:00",
+    image: eventImageFour,
+  },
+     {
+    id: 5,
+    title: "North vs South",
+    location: "Inanda Disc Golf Course, Kylami",
+    date: "23 Oct",
+    time: "14:00",
+    image: eventImageFive,
+  },
+     {
+    id: 6,
+    title: "Eden Christmas Clash",
+    location: "Inanda Disc Golf Course, Kylami",
+    date: "21 Dec",
+    time: "10:00",
+    image: eventImageSix,
+  },
 ];
 
 const FAQS = [
-  { id: 1, question: "Where can I play?", answer: "" },
-  { id: 2, question: "What is Disc Golf?", answer: "" },
-  { id: 3, question: "Why should I become a DGSA member", answer: "" },
-  { id: 4, question: "Can i play if I’ve played before?", answer: "" },
+  {
+    id: 1,
+    question: "Where can I play?",
+    answer: `There are multiple locations you can play disc golf including:
+
+Inanda Disc Golf Course, Gauteng, Kyalami. Bart: 0794917034
+
+The Big Red Barn, Gauteng, Irene. Jandre: 0823472182
+
+Zwartkop Country Club, Gauteng, Centurion. Jandre: 0823472182
+
+Derdepoort Recreational Resort, Gauteng, Pretoria. Etienne: 0832359090
+
+Marais Steyn Park, Gauteng, Edenvale. Charles: 0613351883
+
+Rooirivierrif, Western Cape, George. Leon: 0823303966
+
+Stellenbosch, Western Cape. Chris: 0825751061
+Note that each course may have it’s own entrance fee and some courses are by reservation only.`,
+  },
+
+  { id: 2, question: "What is Disc Golf?", answer: "Disc golf is a flying disc sport where players throw a specialised disc from a tee area into an elevated metal basket with the goal of completing a course in the fewest throws possible" },
+  { id: 3, question: "Why should I become a DGSA member", answer: "Joining DGSA helps us grow the sport in the country by allowing us to host events, run leagues, do clinics, do activations. Joining DGSA will also give you cheaper event entrance, priority registration and access to DGSA merchandise" },
+  { id: 4, question: "Can i play if I’ve played before?", answer: "Absolutely, disc golf is a low barrier to entry sport that is easy for new players to pick up and enjoy" },
 ];
 
 /*Components for the App*/
@@ -65,7 +115,7 @@ function Tournament() {
       <article className="tournament">
         <img
           className="tournament_poster"
-          src={tournamentPoster}
+          src={tournamenthighlight}
           alt="1st PDGA African Disc Golf Championship poster"
         />
 
@@ -97,9 +147,9 @@ function Tournament() {
             <li>PDGA C-Tier</li>
           </ul>
 
-          <button className="disc-button-tournament" type="button">
+          <Link className="disc-button-tournament" to="/signup">
             Join the tournament
-          </button>
+          </Link>
         </div>
       </article>
     </section>
@@ -164,7 +214,7 @@ function Faq() {
 
   return (
     <section id="faq" className="section">
-      <h2 className="section__title">FAQ Accordion</h2>
+      <h2 className="section_title">FAQ Accordion</h2>
 
       <div className="faq">
         {FAQS.map(({ id, question, answer }) => {
@@ -214,7 +264,7 @@ function Footer() {
 
 /* MAIN PAGE*/
 
-export default function App() {
+function HomePage() {
   return (
     <>
       <DgsaNavbar />
@@ -226,5 +276,23 @@ export default function App() {
       </main>
       <Footer />
     </>
+  );
+}
+
+function RegistrationRoute() {
+  const navigate = useNavigate();
+
+  return <RegistrationFlow onBackToDashboard={() => navigate("/")} />;
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/signup" element={<RegistrationRoute />} />
+        <Route path="/registration" element={<RegistrationRoute />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
