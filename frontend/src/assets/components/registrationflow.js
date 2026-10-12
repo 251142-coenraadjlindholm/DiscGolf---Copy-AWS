@@ -23,12 +23,14 @@ export default function RegistrationFlow({ onBackToDashboard }) {
   const [registrants, setRegistrants] = useState([]);
   const [current, setCurrent] = useState(0);
 
+  // begin a new registration flow with multiple registrants
   const beginMultiple = (count) => {
     setRegistrants(Array.from({ length: count }, emptyRegistrant));
     setCurrent(0);
     setStep("details");
   };
 
+  // update a specific registrant
   const updateRegistrant = (updated) =>
     setRegistrants((list) => list.map((r, i) => (i === current ? updated : r)));
 

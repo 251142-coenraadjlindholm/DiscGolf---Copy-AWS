@@ -7,6 +7,7 @@ export function RegistrationTitle() {
   return <h1 className="regplayerTitleLayout">Registration</h1>;
 }
 
+//RegistrationLayout component is used to wrap the registration page content with a consistent layout.
 export default function RegistrationLayout({ children }) {
   return (
     <main className="regplayerLayout">

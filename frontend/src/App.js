@@ -2,6 +2,8 @@ import { useState } from "react";
 import { BrowserRouter, Link, Route, Routes, useNavigate } from "react-router-dom";
 import DgsaNavbar from "./assets/components/navbar";
 import RegistrationFlow from "./assets/components/registrationflow";
+import LoginPage from "./pages/loginpage";
+import SignUpPage from "./pages/signuppage";
 import './App.css';
 import tournamentPoster from "./assets/images/image1.png";
 import eventImageTwo from "./assets/images/image2.png";
@@ -285,12 +287,41 @@ function RegistrationRoute() {
   return <RegistrationFlow onBackToDashboard={() => navigate("/")} />;
 }
 
+function LoginRoute() {
+  const navigate = useNavigate();
+
+  return (
+    <LoginPage
+      onGoToSignUp={() => navigate("/signup")}
+      onLogin={async () => {
+        navigate("/");
+        return { ok: true };
+      }}
+    />
+  );
+}
+
+function SignUpRoute() {
+  const navigate = useNavigate();
+
+  return (
+    <SignUpPage
+      onGoToLogin={() => navigate("/login")}
+      onSignUp={async () => {
+        navigate("/login");
+        return { ok: true };
+      }}
+    />
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/signup" element={<RegistrationRoute />} />
+        <Route path="/login" element={<LoginRoute />} />
+        <Route path="/signup" element={<SignUpRoute />} />
         <Route path="/registration" element={<RegistrationRoute />} />
       </Routes>
     </BrowserRouter>
