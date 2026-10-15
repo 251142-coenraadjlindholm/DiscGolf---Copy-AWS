@@ -90,7 +90,7 @@ Note that each course may have it’s own entrance fee and some courses are by r
 
   { id: 2, question: "What is Disc Golf?", answer: "Disc golf is a flying disc sport where players throw a specialised disc from a tee area into an elevated metal basket with the goal of completing a course in the fewest throws possible" },
   { id: 3, question: "Why should I become a DGSA member", answer: "Joining DGSA helps us grow the sport in the country by allowing us to host events, run leagues, do clinics, do activations. Joining DGSA will also give you cheaper event entrance, priority registration and access to DGSA merchandise" },
-  { id: 4, question: "Can i play if I’ve played before?", answer: "Absolutely, disc golf is a low barrier to entry sport that is easy for new players to pick up and enjoy" },
+  { id: 4, question: "Can i play if I’ve never played before?", answer: "Absolutely, disc golf is a low barrier to entry sport that is easy for new players to pick up and enjoy" },
 ];
 
 /*Components for the App*/
