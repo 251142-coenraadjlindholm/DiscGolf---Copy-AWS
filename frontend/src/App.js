@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { BrowserRouter, Link, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter, Link, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import DgsaNavbar from "./assets/components/navbar";
 import RegistrationFlow from "./assets/components/registrationflow";
-import LoginPage from "./pages/loginpage";
-import SignUpPage from "./pages/signuppage";
+import LoginPage from "./pages/auth/loginpage";
+import SignUpPage from "./pages/auth/signuppage";
+import AdminDashboardPage from "./pages/dashboard/admindashboardpage";
+import MemberDashboardPage from "./pages/dashboard/memberdashboardpage";
+import NewEventPage from "./pages/dashboard/neweventpage";
+import ProfilePage from "./pages/dashboard/profilepage";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import './App.css';
 import tournamentPoster from "./assets/images/image1.png";
 import eventImageTwo from "./assets/images/image2.png";
@@ -13,6 +18,8 @@ import eventImageFive from "./assets/images/image5.png";
 import eventImageSix from "./assets/images/image6.png";
 import tournamenthighlight from "./assets/images/Highlight Image.png";
 import dgsaLogo from "./assets/images/discgolf_logo.png";
+
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 /*Data Given for the App from the figma file*/
 const Events = [
@@ -110,6 +117,8 @@ function Hero() {
 }
 
 function Tournament() {
+  const { user } = useAuth();
+
   return (
     <section id="tournament" className="section">
       <h2 className="section_title">Tournament</h2>
@@ -149,7 +158,7 @@ function Tournament() {
             <li>PDGA C-Tier</li>
           </ul>
 
-          <Link className="disc-button-tournament" to="/signup">
+          <Link className="disc-button-tournament" to={user ? "/registration" : "/signup"}>
             Join the tournament
           </Link>
         </div>
@@ -289,16 +298,38 @@ function RegistrationRoute() {
 
 function LoginRoute() {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   return (
     <LoginPage
       onGoToSignUp={() => navigate("/signup")}
-      onLogin={async () => {
-        navigate("/");
-        return { ok: true };
+      onLogin={async (email, password) => {
+        try {
+          const response = await fetch(`${API_URL}/api/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ email, password }),
+          });
+          const result = await response.json();
+          if (!response.ok) return { ok: false, ...result };
+          setUser(result.user);
+          navigate("/");
+          return { ok: true };
+        } catch {
+          return { ok: false, field: "email", message: "Unable to connect to the backend." };
+        }
+
       }}
     />
   );
+}
+
+function DashboardRoute() {
+  const { user, loading } = useAuth();
+  if (loading) return <p>Loading your dashboard…</p>;
+  if (!user) return <Navigate to="/login" replace />;
+  return user.role === "admin" ? <AdminDashboardPage /> : <MemberDashboardPage />;
 }
 
 function SignUpRoute() {
@@ -307,7 +338,19 @@ function SignUpRoute() {
   return (
     <SignUpPage
       onGoToLogin={() => navigate("/login")}
-      onSignUp={async () => {
+      onSignUp={async ({ name, email, password }) => {
+        try {
+          const response = await fetch(`${API_URL}/api/auth/signup`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ name, email, password }),
+          });
+          const result = await response.json();
+          if (!response.ok) return { ok: false, ...result };
+        } catch {
+          return { ok: false, field: "email", message: "Unable to connect to the backend." };
+        }
         navigate("/login");
         return { ok: true };
       }}
@@ -318,12 +361,33 @@ function SignUpRoute() {
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginRoute />} />
-        <Route path="/signup" element={<SignUpRoute />} />
-        <Route path="/registration" element={<RegistrationRoute />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginRoute />} />
+          <Route path="/signup" element={<SignUpRoute />} />
+          <Route path="/dashboard" element={<DashboardRoute />} />
+          <Route path="/dashboard/profile" element={<ProtectedDashboardRoute />} />
+          <Route path="/dashboard/payments" element={<AdminDashboardRoute />} />
+          <Route path="/dashboard/events/new" element={<AdminDashboardRoute page="new-event" />} />
+          <Route path="/registration" element={<RegistrationRoute />} />
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
+}
+
+function ProtectedDashboardRoute() {
+  const { user, loading } = useAuth();
+  if (loading) return <p>Loading your profile…</p>;
+  if (!user) return <Navigate to="/login" replace />;
+  return <ProfilePage />;
+}
+
+function AdminDashboardRoute({ page }) {
+  const { user, loading } = useAuth();
+  if (loading) return <p>Loading your dashboard…</p>;
+  if (!user) return <Navigate to="/login" replace />;
+  if (user.role !== "admin") return <Navigate to="/dashboard" replace />;
+  return page === "new-event" ? <NewEventPage /> : <AdminDashboardPage />;
 }

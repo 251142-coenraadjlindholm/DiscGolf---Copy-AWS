@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import AuthLayout from "../assets/components/authlayout";
-import loginHero from "../assets/images/login_image.png";
-import "../Styling/loginpage.css";
+import AuthLayout from "./authlayout";
+import loginHero from "../../assets/images/login_image.png";
+import "../../Styling/loginpage.css";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

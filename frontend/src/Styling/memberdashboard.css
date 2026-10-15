@@ -1,0 +1,19 @@
+.poster { width: 100%; display: block; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); }
+
+/* Event cards in the carousel */
+.ev-carousel { padding: 0 28px 22px; }
+.ev-carousel .carousel-control-prev,
+.ev-carousel .carousel-control-next { width: 24px; color: var(--dash-navy); font-size: 1.1rem; opacity: 1; }
+.ev-carousel .carousel-indicators { margin-bottom: 0; }
+.ev-carousel .carousel-indicators [data-bs-target] { width: 6px; height: 6px; border-radius: 50%; border: 0; }
+
+.ev-card { display: block; overflow: hidden; border-radius: 10px; color: var(--dash-navy); text-decoration: none; background: #ffc46b; }
+.ev-card__img { display: block; width: 100%; height: 130px; object-fit: cover; }
+.ev-card__info { display: flex; justify-content: space-between; gap: 8px; padding: 6px 8px; }
+.ev-card__name { margin: 0; font-family: var(--dash-font-display); font-size: 0.95rem; font-weight: 800; line-height: 1.05; text-transform: uppercase; }
+.ev-card__loc { margin: 0; font-size: 0.62rem; }
+.ev-card__when { display: flex; flex-direction: column; align-items: flex-end; font-family: var(--dash-font-display); font-weight: 800; text-transform: uppercase; white-space: nowrap; }
+.ev-card:focus-visible { outline: 2px solid var(--dash-orange); outline-offset: 2px; }
+
+.ev-card { background: var(--orange); }
+.ev-card:hover { background: var(--peach); color: var(--navy); }

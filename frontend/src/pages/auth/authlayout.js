@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "../images/discgolf_logo.png";
+import logo from "../../assets/images/discgolf_logo.png";
 import "../../Styling/registrationlayout.css";
 import "../../Styling/authlayout.css";
 

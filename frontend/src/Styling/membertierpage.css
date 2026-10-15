@@ -1,0 +1,36 @@
+.tier__logo { width: 44px; margin-bottom: 8px; }
+.tier__title { margin-bottom: 24px; }
+
+.tier-card {
+  --bs-card-bg: #0f1a3a;
+  --bs-card-color: #fff;
+  --bs-card-border-color: rgba(255, 255, 255, 0.15);
+  --bs-card-border-radius: 16px;
+  --bs-card-spacer-x: 20px;
+  --bs-card-spacer-y: 20px;
+}
+.tier-card__name {
+  margin: 0;
+  text-align: center;
+  color: var(--reg-orange);
+  font-family: var(--reg-font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.tier-card__price { margin: 0; text-align: center; font-size: 0.85rem; }
+.tier-card__amount {
+  font-family: var(--reg-font-display);
+  font-size: 2rem;
+  font-weight: 800;
+}
+.tier-card__desc { margin: 0; font-size: 0.75rem; color: var(--reg-muted); }
+
+.tier-card__perks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+}
+.tier-card__perks li { display: flex; gap: 8px; padding: 4px 0; }
+.tier-card__perks span { color: #6fdc8c; }

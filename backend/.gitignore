@@ -1,0 +1,6 @@
+node_modules
+.env
+uploads/posters/*
+uploads/proofs/*
+!uploads/posters/.gitkeep
+!uploads/proofs/.gitkeep

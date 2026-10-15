@@ -1,0 +1,3 @@
+/* Make the native date picker icon readable on the dark background */
+.dob-input { color-scheme: dark; }
+.dob-input::-webkit-calendar-picker-indicator { cursor: pointer; }

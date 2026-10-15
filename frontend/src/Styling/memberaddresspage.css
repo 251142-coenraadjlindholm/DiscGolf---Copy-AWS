@@ -1,0 +1,2 @@
+/* Address page uses the shared look; keep ZIP field from stretching oddly on wide screens */
+.reg-card__content .form-control[aria-label="ZIP Code"] { letter-spacing: 0.08em; }

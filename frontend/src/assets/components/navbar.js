@@ -2,9 +2,12 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import logo from "../images/discgolf_logo.png";
 
 function DgsaNavbar() {
+  const { user } = useAuth();
+
   return (
     <Navbar expand="md" data-bs-theme="dark" className="dgsa-navbar">
       <Container fluid>
@@ -21,8 +24,16 @@ function DgsaNavbar() {
           </Nav>
 
           <Nav>
-            <Nav.Link as={Link} to="/login">Login</Nav.Link>
-            <Nav.Link as={Link} to="/signup">Sign up</Nav.Link>
+            {user ? (
+              <Nav.Link as={Link} to="/dashboard" aria-label="Open your dashboard">
+                {user.name} ({user.role === "admin" ? "Admin" : "User"})
+              </Nav.Link>
+            ) : (
+              <>
+                <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                <Nav.Link as={Link} to="/signup">Sign up</Nav.Link>
+              </>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

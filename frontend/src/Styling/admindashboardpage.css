@@ -1,0 +1,92 @@
+/* Header search + Add an Event */
+.dash-search-wrap { position: relative; display: flex; align-items: center; color: var(--dash-navy); }
+.dash-search-wrap svg { position: absolute; left: 10px; pointer-events: none; }
+.dash-search.form-control {
+  width: 200px;
+  padding: 6px 10px 6px 32px;
+  border: 1px solid var(--dash-navy);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dash-navy);
+  font-size: 0.8rem;
+  box-shadow: none;
+}
+.dash-search.form-control::placeholder { color: rgba(27, 42, 82, 0.7); }
+.dash-search.form-control:focus-visible { outline: 2px solid var(--dash-orange); outline-offset: 2px; }
+
+.dash-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: #101a3a;
+  color: var(--dash-orange);
+  font-family: var(--dash-font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.dash-add-btn:hover { color: #ffb84d; }
+.dash-add-btn:focus-visible { outline: 2px solid var(--dash-orange); outline-offset: 2px; }
+
+/* Live Payment Feed */
+.pay-list { margin: 0; padding: 0; list-style: none; max-height: 430px; overflow: auto; display: flex; flex-direction: column; gap: 8px; }
+.pay-item { display: flex; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 8px; background: var(--dash-row); }
+.pay-item__name { margin: 0; font-size: 0.78rem; font-weight: 700; }
+.pay-item__type { display: flex; align-items: center; gap: 4px; margin: 0; font-size: 0.68rem; opacity: 0.8; }
+.pay-item__side { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 6px; }
+
+.pay-actions.btn {
+  --bs-btn-bg: #4f5f9a;
+  --bs-btn-border-color: #4f5f9a;
+  --bs-btn-color: #fff;
+  --bs-btn-hover-bg: #3f4e84;
+  --bs-btn-hover-border-color: #3f4e84;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-bg: #3f4e84;
+  --bs-btn-active-color: #fff;
+  --bs-btn-padding-y: 2px;
+  min-width: 90px;
+  font-family: var(--dash-font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Tournament chip + search */
+.event-chip.btn {
+  --bs-btn-bg: #ffc46b;
+  --bs-btn-border-color: #ffc46b;
+  --bs-btn-color: var(--dash-navy);
+  --bs-btn-hover-bg: #ffb84d;
+  --bs-btn-hover-border-color: #ffb84d;
+  --bs-btn-hover-color: var(--dash-navy);
+  --bs-btn-active-bg: #ffb84d;
+  --bs-btn-active-color: var(--dash-navy);
+  border-radius: 999px;
+  font-size: 0.68rem;
+}
+.chip-clear { display: grid; place-items: center; padding: 0; border: 0; background: none; color: var(--dash-navy); font-size: 0.7rem; }
+.chip-clear:focus-visible { outline: 2px solid var(--dash-orange); outline-offset: 2px; }
+.reg-search.form-control { width: 130px; border-color: var(--dash-navy); background: transparent; color: var(--dash-navy); font-size: 0.72rem; }
+
+.tier { display: inline-flex; align-items: center; gap: 4px; }
+
+.pay-item { background: rgba(255, 255, 255, 0.12); color: var(--white); }
+.pay-actions.btn {
+  --bs-btn-bg: var(--cobalt);
+  --bs-btn-border-color: var(--cobalt);
+  --bs-btn-hover-bg: var(--orange);
+  --bs-btn-hover-border-color: var(--orange);
+  --bs-btn-hover-color: var(--navy);
+}
+.event-chip.btn {
+  --bs-btn-bg: var(--orange);
+  --bs-btn-border-color: var(--orange);
+  --bs-btn-hover-bg: var(--peach);
+  --bs-btn-hover-border-color: var(--peach);
+}

@@ -1,0 +1,15 @@
+.mpay__heading {
+  margin: 0 0 6px;
+  font-family: var(--reg-font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.mpay__details { margin: 0; font-size: 0.8rem; }
+.mpay__details div { display: flex; gap: 6px; }
+.mpay__details dt { font-weight: 600; }
+.mpay__details dd { margin: 0; }
+
+.mpay__amount { display: flex; flex-direction: column; align-items: flex-end; }
+.mpay__amount-label { font-family: var(--reg-font-display); font-size: 1.1rem; font-weight: 700; }
+.mpay__amount-value { font-family: var(--reg-font-display); font-size: 2.6rem; font-weight: 800; color: #ff9a00; }

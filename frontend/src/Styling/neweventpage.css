@@ -1,0 +1,80 @@
+.reg-page.newev {
+  min-height: 100vh;
+  padding: 32px 16px;
+  background:
+    linear-gradient(135deg, rgba(8, 51, 125, 0.88), rgba(6, 22, 51, 0.98)),
+    var(--navy);
+  color: var(--white);
+  font-family: var(--font-body);
+}
+
+.newev__panel {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+}
+.newev__back { margin-bottom: 8px; }
+.newev__card {
+  padding: 28px;
+  border-radius: 16px;
+  background: var(--cobalt);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.newev__logo { width: 40px; }
+.newev__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 3.4rem;
+  font-weight: 800;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+.newev__label { margin: 0 0 6px; padding: 0; float: none; width: auto; font-size: 1rem; font-weight: 700; }
+.newev__optional { font-weight: 400; color: var(--orange); }
+.newev__group { margin: 0; padding: 0; border: 0; }
+
+/* Icon + control joined into one outlined field */
+.newev .input-group-text {
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-right: 0;
+  border-radius: 8px 0 0 8px;
+  background: transparent;
+  color: var(--orange);
+  font-size: 0.85rem;
+}
+.newev .input-group > .reg-input { border-left: 0; border-radius: 0 8px 8px 0; }
+.newev .input-group.has-validation > .form-control:not(:last-child) { border-radius: 0 8px 8px 0; }
+.newev .newev__date { color-scheme: dark; }
+textarea.reg-input { resize: vertical; }
+
+.newev .reg-input {
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(6, 22, 51, 0.25);
+  color: var(--white);
+}
+.newev .reg-input::placeholder { color: rgba(255, 255, 255, 0.75); }
+.newev .reg-input:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 0.2rem rgba(255, 158, 0, 0.25);
+}
+.newev .reg-btn {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--navy);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.newev .reg-btn:hover { background: var(--peach); border-color: var(--peach); color: var(--navy); }
+.newev .reg-link { color: var(--orange); }
+.newev .reg-link:hover { color: var(--peach); }
+
+@media (max-width: 767px) {
+  .newev__card { padding: 16px; }
+  .newev__title { font-size: 2.6rem; }
+}
