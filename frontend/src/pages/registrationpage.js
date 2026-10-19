@@ -12,10 +12,16 @@ const PLAYER_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8];
  *  - No / nothing chosen -> single registration form
  *  - Yes                 -> player-count dropdown + Begin Registration
  */
-export default function RegistrationPage({ onSubmitSingle, onBeginMultiple, onBackToDashboard }) {
+export default function RegistrationPage({
+  onSubmitSingle,
+  onBeginMultiple,
+  onBackToDashboard,
+  initialEmail = "",
+  initialMembershipId = "",
+}) {
   const [multiple, setMultiple] = useState(null); // "yes" | "no" | null
-  const [email, setEmail] = useState("");
-  const [membershipId, setMembershipId] = useState("");
+  const [email, setEmail] = useState(initialEmail);
+  const [membershipId, setMembershipId] = useState(initialMembershipId ? String(initialMembershipId) : "");
   const [proof, setProof] = useState(null);
   const [playerCount, setPlayerCount] = useState("");
   const [errors, setErrors] = useState({});
@@ -24,6 +30,7 @@ export default function RegistrationPage({ onSubmitSingle, onBeginMultiple, onBa
     e.preventDefault();
     const next = {};
     if (!EMAIL_RE.test(email)) next.email = "Enter a valid email address.";
+    if (!/^\d{6}$/.test(membershipId)) next.membershipId = "Enter your 6-digit DGSA membership ID.";
     if (!proof) next.proof = "Upload your proof of payment.";
     setErrors(next);
     if (Object.keys(next).length === 0) onSubmitSingle({ email, membershipId, proof });
@@ -94,11 +101,15 @@ export default function RegistrationPage({ onSubmitSingle, onBeginMultiple, onBa
             <Form.Control
               type="text"
               className="regplayerInputPage"
-              placeholder="DGSA Membership ID (optional)"
-              aria-label="DGSA Membership ID (optional)"
+              placeholder="DGSA Membership ID"
+              aria-label="DGSA Membership ID"
+              required
+              readOnly={Boolean(initialMembershipId)}
               value={membershipId}
+              isInvalid={!!errors.membershipId}
               onChange={(e) => setMembershipId(e.target.value)}
             />
+            <Form.Control.Feedback type="invalid">{errors.membershipId}</Form.Control.Feedback>
           </Form.Group>
 
           <p className="fw-semibold mb-0">Proof of Payment</p>

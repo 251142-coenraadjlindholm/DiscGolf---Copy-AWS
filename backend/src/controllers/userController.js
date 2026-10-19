@@ -10,8 +10,12 @@ export const lookupByEmail = asyncHandler(async (req, res) => {
   const email = asString(req.query.email).toLowerCase();
   if (!isEmail(email)) return res.status(400).json({ message: "Enter a valid email address." });
 
-  const user = await User.findOne({ email }).select("tier");
-  res.json({ exists: Boolean(user), tier: user?.tier ?? null }); // never returns anything else about the person
+  const user = await User.findOne({ email }).select("tier dgsaMembershipId");
+  res.json({
+    exists: Boolean(user),
+    tier: user?.tier ?? null,
+    membershipId: user?.dgsaMembershipId ?? null,
+  });
 });
 
 // POST /api/users/membership   multipart: details + address fields + proof file

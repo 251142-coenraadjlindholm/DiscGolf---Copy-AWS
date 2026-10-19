@@ -2,14 +2,17 @@ import { useState } from "react";
 import RegistrationPage from "../../pages/registrationpage";
 import RegistrantDetailsPage from "../../pages/registrationdetailspage";
 import PaymentPage from "../../pages/registrationpaymentpage";
+import { useAuth } from "../../context/AuthContext";
 
 const FEE_PER_PLAYER = 300; // R300 shown in the design: confirm if this is per player or a flat fee
 
 // replace with your real API calls
 async function checkEmailExists(email) {
-  // const res = await fetch(`/api/users/exists?email=${encodeURIComponent(email)}`);
-  // return (await res.json()).exists;
-  return true;
+  const res = await fetch(`/api/users/lookup?email=${encodeURIComponent(email)}`, {
+    credentials: "include",
+  });
+  if (!res.ok) return { exists: false, membershipId: null };
+  return res.json();
 }
 async function submitRegistration(payload) {
   // const body = new FormData(); ... await fetch("/api/registrations", { method: "POST", body });
@@ -19,6 +22,7 @@ async function submitRegistration(payload) {
 const emptyRegistrant = () => ({ email: "", membershipId: "", division: "" });
 
 export default function RegistrationFlow({ onBackToDashboard }) {
+  const { user } = useAuth();
   const [step, setStep] = useState("choice"); // choice | details | payment | done
   const [registrants, setRegistrants] = useState([]);
   const [current, setCurrent] = useState(0);
@@ -38,6 +42,8 @@ export default function RegistrationFlow({ onBackToDashboard }) {
     return (
       <RegistrationPage
         onBackToDashboard={onBackToDashboard}
+        initialEmail={user.email}
+        initialMembershipId={user.dgsaMembershipId}
         onBeginMultiple={beginMultiple}
         onSubmitSingle={async (data) => {
           await submitRegistration({ registrants: [data], proof: data.proof });

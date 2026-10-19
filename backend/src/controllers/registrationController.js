@@ -44,8 +44,8 @@ export const create = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return bad(404, "email", `Email not found. ${email} must create an account.`);
 
-    // The membership ID is optional, but if it's given it must be the one issued to that account
-    if (membershipId && Number(membershipId) !== user.dgsaMembershipId)
+    // Every player must provide the six-digit ID issued to their account.
+    if (!/^\d{6}$/.test(membershipId) || Number(membershipId) !== user.dgsaMembershipId)
       return bad(400, "membershipId", `The DGSA membership ID doesn't match ${email}.`);
 
     if (await Registration.exists({ event: event._id, user: user._id }))
