@@ -71,6 +71,39 @@ export const submitMembership = asyncHandler(async (req, res) => {
   res.status(201).json({ message: "Membership submitted. We'll check your payment." });
 });
 
+// POST /api/users/membership/purchase (demo purchase; no real payment is processed)
+export const purchaseMembership = asyncHandler(async (req, res) => {
+  if (req.user.tier === "dgsa") {
+    return res.status(409).json({ message: "You already have a DGSA membership." });
+  }
+
+  const payment = await Payment.create({
+    user: req.user._id,
+    type: "membership",
+    amount: MEMBERSHIP_FEE,
+    proofFile: "demo-membership-purchase",
+    status: "on_time",
+  });
+
+  req.user.tier = "dgsa";
+  await req.user.save();
+
+  res.status(201).json({
+    message: "DGSA membership activated.",
+    paymentId: payment._id,
+    user: {
+      id: req.user._id,
+      name: req.user.name,
+      email: req.user.email,
+      role: req.user.role,
+      tier: req.user.tier,
+      status: req.user.status,
+      dgsaMembershipId: req.user.dgsaMembershipId,
+      avatarUrl: req.user.avatarUrl || null,
+    },
+  });
+});
+
 // GET /api/admin/members
 export const listMembers = asyncHandler(async (req, res) => {
   const users = await User.find({ role: "member" }).sort({ name: 1 }).limit(500).select("name tier mobile status");

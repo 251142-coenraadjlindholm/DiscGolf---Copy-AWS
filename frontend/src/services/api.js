@@ -11,6 +11,7 @@ export const getAdminMembers = () => get("/api/admin/members");
 export const getAdminRegistrations = (eventId = "") =>
   get(`/api/admin/registrations${eventId ? `?eventId=${encodeURIComponent(eventId)}` : ""}`);
 export const getEvents = () => get("/api/events");
+export const purchaseMembership = () => get("/api/users/membership/purchase", { method: "POST" });
 
 export async function createEvent(values, poster) {
   const body = new FormData();
