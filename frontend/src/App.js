@@ -27,7 +27,6 @@ import dgsaLogo from "./assets/images/discgolf_logo.png";
 const API_URL =
   process.env.REACT_APP_API_URL ||
   (process.env.NODE_ENV === "production" ? window.location.origin : "http://localhost:5000");
-const GA_ID = process.env.REACT_APP_GA_ID;
 
 /*Data Given for the App from the figma file*/
 const Events = [
@@ -381,25 +380,6 @@ function SignUpRoute() {
 }
 
 export default function App() {
-  useEffect(() => {
-    if (!GA_ID || document.querySelector(`script[data-ga-id="${GA_ID}"]`)) return undefined;
-
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = (...args) => window.dataLayer.push(args);
-    window.gtag("js", new Date());
-    window.gtag("config", GA_ID);
-
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-    script.dataset.gaId = GA_ID;
-    document.head.appendChild(script);
-
-    return () => {
-      script.remove();
-    };
-  }, []);
-
   return (
     <BrowserRouter>
       <AuthProvider>
