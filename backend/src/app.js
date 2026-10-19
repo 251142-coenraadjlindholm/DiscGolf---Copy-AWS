@@ -14,7 +14,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const frontendBuildPath = path.join(__dirname, "../../frontend/build");
 
-app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } })); // lets the React app show poster images
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  contentSecurityPolicy: {
+    directives: {
+      "script-src": ["'self'", "'unsafe-inline'", "https://www.googletagmanager.com"],
+      "connect-src": ["'self'", "https://www.google-analytics.com", "https://analytics.google.com"],
+    },
+  },
+})); // lets the React app show poster images
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json({ limit: "100kb" }));
 app.use(cookieParser());

@@ -18,6 +18,7 @@ export default function RegistrationPage({
   onBackToDashboard,
   initialEmail = "",
   initialMembershipId = "",
+  error = "",
 }) {
   const [multiple, setMultiple] = useState(null); // "yes" | "no" | null
   const [email, setEmail] = useState(initialEmail);
@@ -48,6 +49,7 @@ export default function RegistrationPage({
   return (
     <RegistrationLayout>
       <RegistrationTitle />
+      {error && <div className="alert alert-danger">{error}</div>}
 
       <Form.Group role="radiogroup" aria-labelledby="multiple-label" className="regplayerChoicePage">
       <Form.Label id="multiple-label" className="regplayerChoiceLabelPage mb-0">

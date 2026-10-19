@@ -25,6 +25,21 @@ export default function RegistrationFlow({ eventId, onBackToDashboard }) {
   const [step, setStep] = useState("choice"); // choice | details | payment | done
   const [registrants, setRegistrants] = useState([]);
   const [current, setCurrent] = useState(0);
+  const [submitError, setSubmitError] = useState("");
+
+  const submit = async (registrantsToSubmit, proof) => {
+    if (!eventId) {
+      setSubmitError("This tournament could not be loaded. Return home and choose the tournament again.");
+      return;
+    }
+    const result = await submitEventRegistration(eventId, registrantsToSubmit, proof);
+    if (result.ok) {
+      setSubmitError("");
+      setStep("done");
+    } else {
+      setSubmitError(result.data?.message || "Unable to complete registration. Please try again.");
+    }
+  };
 
   // begin a new registration flow with multiple registrants
   const beginMultiple = (count) => {
@@ -43,10 +58,10 @@ export default function RegistrationFlow({ eventId, onBackToDashboard }) {
         onBackToDashboard={onBackToDashboard}
         initialEmail={user.email}
         initialMembershipId={user.dgsaMembershipId}
+        error={submitError}
         onBeginMultiple={beginMultiple}
         onSubmitSingle={async (data) => {
-          const result = await submitEventRegistration(eventId, [data], data.proof);
-          if (result.ok) setStep("done");
+          await submit([data], data.proof);
         }}
       />
     );
@@ -74,8 +89,7 @@ export default function RegistrationFlow({ eventId, onBackToDashboard }) {
         amount={FEE_PER_PLAYER * registrants.length}
         onBack={() => { setCurrent(registrants.length - 1); setStep("details"); }}
         onFinish={async (proof) => {
-          const result = await submitEventRegistration(eventId, registrants, proof);
-          if (result.ok) setStep("done");
+          await submit(registrants, proof);
         }}
       />
     );

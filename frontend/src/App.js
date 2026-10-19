@@ -131,7 +131,9 @@ function Tournament() {
     let alive = true;
     getEvents().then((result) => {
       if (alive && result.ok) {
-        const event = result.data.events.find((item) => item.name === "1st African Disc Golf Championship");
+        const event = result.data.events.find((item) =>
+          item.name?.toLowerCase().includes("african disc golf championship")
+        );
         if (event) setEventId(event.id);
       }
     });
@@ -177,9 +179,22 @@ function Tournament() {
             <li>PDGA C-Tier</li>
           </ul>
 
-          <Link className="disc-button-tournament" to={user ? `/registration?eventId=${eventId}` : "/signup"}>
-            Join the tournament
-          </Link>
+          {user ? (
+            <Link
+              className={`disc-button-tournament${eventId ? "" : " disabled"}`}
+              to={eventId ? `/registration?eventId=${encodeURIComponent(eventId)}` : "#tournament"}
+              aria-disabled={!eventId}
+              onClick={(event) => {
+                if (!eventId) event.preventDefault();
+              }}
+            >
+              {eventId ? "Join the tournament" : "Tournament unavailable"}
+            </Link>
+          ) : (
+            <Link className="disc-button-tournament" to="/signup">
+              Join the tournament
+            </Link>
+          )}
         </div>
       </article>
     </section>
