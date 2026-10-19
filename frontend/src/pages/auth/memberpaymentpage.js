@@ -36,8 +36,8 @@ export default function MembershipPaymentPage({ amount = 370, onPay }) {
   };
 
   return (
-    <AuthLayout title="Become a Member" image={memberHero} imageAlt="Disc golfer in a South Africa jersey">
-      <Row className="align-items-start">
+    <AuthLayout pagePrefix="memberPayment" title="Become a Member" image={memberHero} imageAlt="Disc golfer in a South Africa jersey">
+      <Row className="memberPaymentSummary align-items-start">
         <Col>
           <h2 className="mpay__heading">DGSA Banking Details</h2>
           <dl className="mpay__details">
@@ -55,16 +55,16 @@ export default function MembershipPaymentPage({ amount = 370, onPay }) {
       </Row>
 
       <Form onSubmit={handleSubmit} noValidate className="d-flex flex-column gap-3 flex-grow-1">
-        <p className="fw-semibold mb-0">Demo payment details</p>
-        {error && <Alert variant="danger">{error}</Alert>}
-        <Form.Control placeholder="Name on card" value={details.name} onChange={update("name")} />
-        <Form.Control inputMode="numeric" placeholder="Card number" value={details.number} onChange={update("number")} />
+        <p className="memberPaymentLabel mb-0">Demo payment details</p>
+        {error && <Alert className="memberPaymentAlert" variant="danger">{error}</Alert>}
+        <Form.Control className="memberPaymentInput" placeholder="Name on card" value={details.name} onChange={update("name")} />
+        <Form.Control className="memberPaymentInput" inputMode="numeric" placeholder="Card number" value={details.number} onChange={update("number")} />
         <Row className="g-3">
-          <Col><Form.Control placeholder="MM/YY" value={details.expiry} onChange={update("expiry")} /></Col>
-          <Col><Form.Control inputMode="numeric" placeholder="CVV" value={details.cvv} onChange={update("cvv")} /></Col>
+          <Col><Form.Control className="memberPaymentInput" placeholder="MM/YY" value={details.expiry} onChange={update("expiry")} /></Col>
+          <Col><Form.Control className="memberPaymentInput" inputMode="numeric" placeholder="CVV" value={details.cvv} onChange={update("cvv")} /></Col>
         </Row>
-        <p className="small text-muted mb-0">This is a demo payment. No money will be charged.</p>
-        <Button type="submit" className="reg-btn mt-auto" disabled={submitting}>
+        <p className="memberPaymentNote mb-0">This is a demo payment. No money will be charged.</p>
+        <Button type="submit" className="memberPaymentButton mt-auto" disabled={submitting}>
           {submitting ? "Activating membership…" : `Pay R${amount}`}
         </Button>
       </Form>
