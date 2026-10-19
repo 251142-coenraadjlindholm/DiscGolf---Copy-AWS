@@ -25,7 +25,7 @@ function DgsaNavbar() {
 
           <Nav>
             {user ? (
-              <Nav.Link as={Link} to="/dashboard" aria-label="Open your dashboard">
+              <Nav.Link as={Link} to="/membership" aria-label="Open membership options">
                 {user.name} ({user.role === "admin" ? "Admin" : "User"})
               </Nav.Link>
             ) : (

@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { Form, Row, Col, Button, Alert } from "react-bootstrap";
 import AuthLayout from "./authlayout";
-import FileUpload from "../registration/FileUpload";
-import memberHero from "../../assets/member-hero.jpg";
-import "./MembershipPaymentPage.css";
+import memberHero from "../../assets/images/become_a_member_image.png";
+import "../../Styling/memberpaymentpage.css";
 
 // Same details as the tournament payment page: copy exactly from Figma / DGSA
 // (move into one shared config file later so you only edit them once)
@@ -15,20 +14,23 @@ const BANKING = {
   reference: "Name/Membership No.",
 };
 
-export default function MembershipPaymentPage({ amount = 370, onCreateAccount }) {
-  const [proof, setProof] = useState(null);
+export default function MembershipPaymentPage({ amount = 370, onPay }) {
+  const [details, setDetails] = useState({ name: "", number: "", expiry: "", cvv: "" });
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  const update = (field) => (event) =>
+    setDetails((current) => ({ ...current, [field]: event.target.value }));
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!proof) {
-      setError("Upload your proof of payment.");
+    if (Object.values(details).some((value) => !value.trim())) {
+      setError("Complete all payment details.");
       return;
     }
     setError("");
     setSubmitting(true);
-    const result = await onCreateAccount(proof);
+    const result = await onPay();
     setSubmitting(false);
     if (result && result.ok === false) setError(result.message);
   };
@@ -53,10 +55,17 @@ export default function MembershipPaymentPage({ amount = 370, onCreateAccount })
       </Row>
 
       <Form onSubmit={handleSubmit} noValidate className="d-flex flex-column gap-3 flex-grow-1">
-        <p className="fw-semibold mb-0">Proof of Payment</p>
-        <FileUpload file={proof} onChange={setProof} error={error} />
+        <p className="fw-semibold mb-0">Demo payment details</p>
+        {error && <Alert variant="danger">{error}</Alert>}
+        <Form.Control placeholder="Name on card" value={details.name} onChange={update("name")} />
+        <Form.Control inputMode="numeric" placeholder="Card number" value={details.number} onChange={update("number")} />
+        <Row className="g-3">
+          <Col><Form.Control placeholder="MM/YY" value={details.expiry} onChange={update("expiry")} /></Col>
+          <Col><Form.Control inputMode="numeric" placeholder="CVV" value={details.cvv} onChange={update("cvv")} /></Col>
+        </Row>
+        <p className="small text-muted mb-0">This is a demo payment. No money will be charged.</p>
         <Button type="submit" className="reg-btn mt-auto" disabled={submitting}>
-          {submitting ? "Creating account…" : "Create an Account"}
+          {submitting ? "Activating membership…" : `Pay R${amount}`}
         </Button>
       </Form>
     </AuthLayout>

@@ -9,6 +9,9 @@ import AdminDashboardPage from "./pages/dashboard/admindashboardpage";
 import MemberDashboardPage from "./pages/dashboard/memberdashboardpage";
 import NewEventPage from "./pages/dashboard/neweventpage";
 import ProfilePage from "./pages/dashboard/profilepage";
+import MemberTierPage from "./pages/auth/membertierpage";
+import MembershipPaymentPage from "./pages/auth/memberpaymentpage";
+import { purchaseMembership } from "./services/api";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import './App.css';
 import tournamentPoster from "./assets/images/image1.png";
@@ -371,6 +374,7 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginRoute />} />
             <Route path="/signup" element={<SignUpRoute />} />
+            <Route path="/membership" element={<MembershipRoute />} />
             <Route path="/dashboard" element={<DashboardRoute />} />
             <Route path="/dashboard/profile" element={<ProtectedDashboardRoute />} />
             <Route path="/dashboard/payments" element={<AdminDashboardRoute />} />
@@ -388,6 +392,33 @@ function ProtectedDashboardRoute() {
   if (loading) return <p>Loading your profile…</p>;
   if (!user) return <Navigate to="/login" replace />;
   return <ProfilePage />;
+}
+
+function MembershipRoute() {
+  const { user, loading, setUser } = useAuth();
+  const navigate = useNavigate();
+  const [step, setStep] = useState("tiers");
+
+  if (loading) return <p>Loading membership options…</p>;
+  if (!user) return <Navigate to="/login" replace />;
+  if (user.tier === "dgsa") return <Navigate to="/dashboard/profile" replace />;
+
+  if (step === "payment") {
+    return (
+      <MembershipPaymentPage
+        onPay={async () => {
+          const result = await purchaseMembership();
+          if (result.ok) {
+            setUser(result.data.user);
+            navigate("/dashboard/profile");
+          }
+          return result;
+        }}
+      />
+    );
+  }
+
+  return <MemberTierPage onSelectFree={() => navigate("/dashboard")} onSelectMember={() => setStep("payment")} />;
 }
 
 function AdminDashboardRoute({ page }) {
