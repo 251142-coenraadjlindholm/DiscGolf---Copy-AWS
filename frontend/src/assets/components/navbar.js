@@ -29,11 +29,9 @@ function DgsaNavbar() {
                 <Nav.Link as={Link} to="/dashboard" aria-label="Open your dashboard">
                   {user.name} ({user.role === "admin" ? "Admin" : "User"})
                 </Nav.Link>
-                {user.tier !== "dgsa" && (
-                  <Nav.Link as={Link} to="/membership" aria-label="View membership options">
-                    Membership
-                  </Nav.Link>
-                )}
+                <Nav.Link as={Link} to="/membership" aria-label="View membership options">
+                  Membership
+                </Nav.Link>
               </>
             ) : (
               <>
