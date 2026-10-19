@@ -1,5 +1,33 @@
-.tier__logo { width: 44px; margin-bottom: 8px; }
-.tier__title { margin-bottom: 24px; }
+.reg-page {
+  --reg-font-display: var(--font-display, sans-serif);
+  min-height: 100dvh;
+  padding: clamp(1rem, 4vw, 3rem);
+  color: var(--white, #fff);
+}
+
+.reg-wrap {
+  max-width: 70rem;
+  margin: 0 auto;
+}
+
+.reg-card {
+  background: rgba(6, 22, 51, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 1.5rem;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.24);
+}
+
+.tier-panel .card-body { padding: clamp(1.25rem, 4vw, 3rem); }
+.tier__logo { width: 4.5rem; height: auto; margin-bottom: 1rem; }
+.reg-title {
+  margin: 0 0 2rem;
+  font-family: var(--reg-font-display);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.tier__title { margin-bottom: 2rem; }
 
 .tier-card {
   --bs-card-bg: #0f1a3a;
@@ -8,6 +36,8 @@
   --bs-card-border-radius: 16px;
   --bs-card-spacer-x: 20px;
   --bs-card-spacer-y: 20px;
+  height: 100%;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.18);
 }
 .tier-card__name {
   margin: 0;
@@ -34,3 +64,29 @@
 }
 .tier-card__perks li { display: flex; gap: 8px; padding: 4px 0; }
 .tier-card__perks span { color: #6fdc8c; }
+
+.tier-card .reg-btn {
+  width: 100%;
+  margin-top: auto;
+  padding: 0.75rem 1rem;
+  color: var(--navy, #061633);
+  background: var(--orange, #ff9a00);
+  border: 1px solid var(--orange, #ff9a00);
+  border-radius: 0.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.tier-card .reg-btn:hover,
+.tier-card .reg-btn:focus {
+  color: var(--navy, #061633);
+  background: var(--white, #fff);
+  border-color: var(--white, #fff);
+}
+
+@media (max-width: 767px) {
+  .reg-page { padding: 1rem; }
+  .tier-panel .card-body { padding: 1.25rem; }
+  .tier__logo { width: 3.75rem; }
+  .reg-title { margin-bottom: 1.5rem; }
+}

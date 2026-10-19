@@ -1,5 +1,44 @@
 .regplayerDetailsHeadingPage {
+  margin: 0;
   color: #ff9a00;
   font-size: 0.8rem;
   font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.regplayerInputDetailsPage {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.7rem 0.85rem;
+  color: var(--white);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 0.25rem;
+}
+
+.regplayerInputDetailsPage::placeholder { color: rgba(255, 255, 255, 0.75); }
+.regplayerInputDetailsPage:focus {
+  color: var(--white);
+  background: transparent;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 0.2rem rgba(255, 158, 0, 0.25);
+}
+
+.regplayerInputDetailsPage option {
+  color: var(--navy);
+  background: var(--white);
+}
+
+.regplayerLinkDetailsPage {
+  padding: 0;
+  color: var(--orange);
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.regplayerLinkDetailsPage:hover,
+.regplayerLinkDetailsPage:focus {
+  color: var(--white);
 }
