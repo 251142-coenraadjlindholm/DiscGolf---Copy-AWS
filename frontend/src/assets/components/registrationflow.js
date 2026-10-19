@@ -4,6 +4,7 @@ import RegistrationPage from "../../pages/registrationpage";
 import RegistrantDetailsPage from "../../pages/registrationdetailspage";
 import PaymentPage from "../../pages/registrationpaymentpage";
 import { useAuth } from "../../context/AuthContext";
+import { submitEventRegistration } from "../../services/api";
 import logo from "../images/discgolf_logo.png";
 import "../../Styling/registrationconfirmation.css";
 
@@ -17,14 +18,9 @@ async function checkEmailExists(email) {
   if (!res.ok) return { exists: false, membershipId: null };
   return res.json();
 }
-async function submitRegistration(payload) {
-  // const body = new FormData(); ... await fetch("/api/registrations", { method: "POST", body });
-  console.log("Submit", payload);
-}
-
 const emptyRegistrant = () => ({ email: "", membershipId: "", division: "" });
 
-export default function RegistrationFlow({ onBackToDashboard }) {
+export default function RegistrationFlow({ eventId, onBackToDashboard }) {
   const { user } = useAuth();
   const [step, setStep] = useState("choice"); // choice | details | payment | done
   const [registrants, setRegistrants] = useState([]);
@@ -49,8 +45,8 @@ export default function RegistrationFlow({ onBackToDashboard }) {
         initialMembershipId={user.dgsaMembershipId}
         onBeginMultiple={beginMultiple}
         onSubmitSingle={async (data) => {
-          await submitRegistration({ registrants: [data], proof: data.proof });
-          setStep("done");
+          const result = await submitEventRegistration(eventId, [data], data.proof);
+          if (result.ok) setStep("done");
         }}
       />
     );
@@ -78,8 +74,8 @@ export default function RegistrationFlow({ onBackToDashboard }) {
         amount={FEE_PER_PLAYER * registrants.length}
         onBack={() => { setCurrent(registrants.length - 1); setStep("details"); }}
         onFinish={async (proof) => {
-          await submitRegistration({ registrants, proof });
-          setStep("done");
+          const result = await submitEventRegistration(eventId, registrants, proof);
+          if (result.ok) setStep("done");
         }}
       />
     );

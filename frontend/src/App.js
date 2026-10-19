@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Link, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import DgsaNavbar from "./assets/components/navbar";
 import AnimatedBackground from "./assets/components/animatedbackground";
@@ -13,6 +13,7 @@ import MemberTierPage from "./pages/auth/membertierpage";
 import MembershipPaymentPage from "./pages/auth/memberpaymentpage";
 import { purchaseMembership } from "./services/api";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { getEvents } from "./services/api";
 import './App.css';
 import tournamentPoster from "./assets/images/image1.png";
 import eventImageTwo from "./assets/images/image2.png";
@@ -124,6 +125,18 @@ function Hero() {
 
 function Tournament() {
   const { user } = useAuth();
+  const [eventId, setEventId] = useState("");
+
+  useEffect(() => {
+    let alive = true;
+    getEvents().then((result) => {
+      if (alive && result.ok) {
+        const event = result.data.events.find((item) => item.name === "1st African Disc Golf Championship");
+        if (event) setEventId(event.id);
+      }
+    });
+    return () => { alive = false; };
+  }, []);
 
   return (
     <section id="tournament" className="section">
@@ -164,7 +177,7 @@ function Tournament() {
             <li>PDGA C-Tier</li>
           </ul>
 
-          <Link className="disc-button-tournament" to={user ? "/registration" : "/signup"}>
+          <Link className="disc-button-tournament" to={user ? `/registration?eventId=${eventId}` : "/signup"}>
             Join the tournament
           </Link>
         </div>
@@ -298,8 +311,9 @@ function HomePage() {
 
 function RegistrationRoute() {
   const navigate = useNavigate();
+  const eventId = new URLSearchParams(window.location.search).get("eventId");
 
-  return <RegistrationFlow onBackToDashboard={() => navigate("/")} />;
+  return <RegistrationFlow eventId={eventId} onBackToDashboard={() => navigate("/")} />;
 }
 
 function LoginRoute() {
