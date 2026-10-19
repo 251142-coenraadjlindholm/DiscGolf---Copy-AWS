@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { BrowserRouter, Link, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import DgsaNavbar from "./assets/components/navbar";
+import AnimatedBackground from "./assets/components/animatedbackground";
 import RegistrationFlow from "./assets/components/registrationflow";
 import LoginPage from "./pages/auth/loginpage";
 import SignUpPage from "./pages/auth/signuppage";
@@ -362,16 +363,19 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginRoute />} />
-          <Route path="/signup" element={<SignUpRoute />} />
-          <Route path="/dashboard" element={<DashboardRoute />} />
-          <Route path="/dashboard/profile" element={<ProtectedDashboardRoute />} />
-          <Route path="/dashboard/payments" element={<AdminDashboardRoute />} />
-          <Route path="/dashboard/events/new" element={<AdminDashboardRoute page="new-event" />} />
-          <Route path="/registration" element={<RegistrationRoute />} />
-        </Routes>
+        <AnimatedBackground />
+        <div className="app-content">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginRoute />} />
+            <Route path="/signup" element={<SignUpRoute />} />
+            <Route path="/dashboard" element={<DashboardRoute />} />
+            <Route path="/dashboard/profile" element={<ProtectedDashboardRoute />} />
+            <Route path="/dashboard/payments" element={<AdminDashboardRoute />} />
+            <Route path="/dashboard/events/new" element={<AdminDashboardRoute page="new-event" />} />
+            <Route path="/registration" element={<RegistrationRoute />} />
+          </Routes>
+        </div>
       </AuthProvider>
     </BrowserRouter>
   );

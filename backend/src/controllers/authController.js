@@ -63,4 +63,4 @@ export const logout = (req, res) => {
 };
 
 // GET /api/auth/me
-export const me = (req, res) => res.json({ user: publicUser(req.user) });
+export const me = (req, res) => res.json({ user: req.user ? publicUser(req.user) : null });

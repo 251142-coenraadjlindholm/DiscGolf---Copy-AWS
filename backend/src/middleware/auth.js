@@ -35,5 +35,19 @@ export const authenticate = asyncHandler(async (req, res, next) => {
   next();
 });
 
+export const optionallyAuthenticate = asyncHandler(async (req, res, next) => {
+  const token = req.cookies?.token;
+  if (!token) return next();
+
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await User.findById(payload.id);
+  } catch {
+    req.user = null;
+  }
+
+  next();
+});
+
 export const requireAdmin = (req, res, next) =>
   req.user?.role === "admin" ? next() : res.status(403).json({ message: "Admins only." });
