@@ -129,6 +129,10 @@ function Tournament() {
 
   useEffect(() => {
     let alive = true;
+    if (!user) {
+      setEventId("");
+      return () => { alive = false; };
+    }
     getEvents().then((result) => {
       if (alive && result.ok) {
         const event = result.data.events.find((item) =>
@@ -138,7 +142,7 @@ function Tournament() {
       }
     });
     return () => { alive = false; };
-  }, []);
+  }, [user]);
 
   return (
     <section id="tournament" className="section">
