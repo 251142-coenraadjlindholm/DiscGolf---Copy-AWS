@@ -30,7 +30,6 @@ export default function RegistrationPage({
     e.preventDefault();
     const next = {};
     if (!EMAIL_RE.test(email)) next.email = "Enter a valid email address.";
-    if (!/^\d{6}$/.test(membershipId)) next.membershipId = "Enter your 6-digit DGSA membership ID.";
     if (!proof) next.proof = "Upload your proof of payment.";
     setErrors(next);
     if (Object.keys(next).length === 0) onSubmitSingle({ email, membershipId, proof });
@@ -103,12 +102,14 @@ export default function RegistrationPage({
               className="regplayerInputPage"
               placeholder="DGSA Membership ID"
               aria-label="DGSA Membership ID"
-              required
-              readOnly={Boolean(initialMembershipId)}
+              aria-describedby="membershipId-help"
               value={membershipId}
               isInvalid={!!errors.membershipId}
               onChange={(e) => setMembershipId(e.target.value)}
             />
+            <Form.Text id="membershipId-help">
+              Optional. Enter your ID to receive the DGSA member discount.
+            </Form.Text>
             <Form.Control.Feedback type="invalid">{errors.membershipId}</Form.Control.Feedback>
           </Form.Group>
 

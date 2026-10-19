@@ -37,8 +37,7 @@ export default function RegistrantDetailsPage({
       const result = await checkEmailExists(registrant.email);
       setChecking(false);
       if (!result.exists) next.email = "Email not found. This user must create an account.";
-      else if (!result.membershipId) next.membershipId = "This account does not have a DGSA membership ID.";
-      else onChange({ ...registrant, membershipId: String(result.membershipId) });
+      else if (result.membershipId) onChange({ ...registrant, membershipId: String(result.membershipId) });
     }
 
     setErrors(next);
@@ -72,11 +71,13 @@ export default function RegistrantDetailsPage({
             className="regplayerInputDetailsPage"
             placeholder="DGSA Membership ID"
             aria-label="DGSA Membership ID"
-            required
-            readOnly={Boolean(registrant.membershipId)}
+            aria-describedby="membershipId-help"
             value={registrant.membershipId}
             onChange={update("membershipId")}
           />
+          <Form.Text id="membershipId-help">
+            Optional. Enter the player&apos;s ID to receive the DGSA member discount.
+          </Form.Text>
         </Form.Group>
 
         <Form.Group controlId="division">

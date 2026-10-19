@@ -4,6 +4,7 @@ import Payment from "../models/Payment.js";
 import User from "../models/User.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { PAYMENT_STATUSES, PROOFS_DIR } from "../config/constants.js";
+import { createMembershipId } from "../utils/membership.js";
 
 // GET /api/admin/payments  (Live Payment Feed)
 export const adminList = asyncHandler(async (req, res) => {
@@ -36,7 +37,12 @@ export const updateStatus = asyncHandler(async (req, res) => {
 
   // Assumption: a membership payment marked "on time" makes the person a DGSA member
   if (payment.type === "membership" && status === "on_time") {
-    await User.findByIdAndUpdate(payment.user, { tier: "dgsa" });
+    const user = await User.findById(payment.user);
+    if (user) {
+      user.tier = "dgsa";
+      if (!user.dgsaMembershipId) user.dgsaMembershipId = await createMembershipId();
+      await user.save();
+    }
   }
 
   res.json({ id: payment._id, status: payment.status });

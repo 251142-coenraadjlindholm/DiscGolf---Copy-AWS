@@ -35,7 +35,7 @@ export default function ProfilePage() {
           <p><strong>Email:</strong> {user.email}</p>
           <p><strong>Account type:</strong> {user.role === "admin" ? "Admin" : "User"}</p>
           <p><strong>Membership:</strong> {user.tier === "dgsa" ? "DGSA member" : "Free member"}</p>
-          <p><strong>DGSA membership ID:</strong> {user.dgsaMembershipId || "Not assigned"}</p>
+          <p><strong>DGSA membership ID:</strong> {user.tier === "dgsa" ? user.dgsaMembershipId : "Not assigned"}</p>
           {user.tier !== "dgsa" && (
             <Button type="button" onClick={handlePurchase} disabled={purchasing}>
               {purchasing ? <><Spinner size="sm" className="me-2" /> Activating…</> : "Buy DGSA membership (demo)"}

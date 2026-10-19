@@ -4,6 +4,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { reject } from "../utils/respond.js";
 import { asString, isEmail, hasDigits, isZip } from "../utils/validators.js";
 import { DIVISIONS, MEMBERSHIP_FEE } from "../config/constants.js";
+import { createMembershipId } from "../utils/membership.js";
 
 // GET /api/users/lookup?email=   (logged-in users registering other players)
 export const lookupByEmail = asyncHandler(async (req, res) => {
@@ -14,7 +15,7 @@ export const lookupByEmail = asyncHandler(async (req, res) => {
   res.json({
     exists: Boolean(user),
     tier: user?.tier ?? null,
-    membershipId: user?.dgsaMembershipId ?? null,
+    membershipId: user?.tier === "dgsa" ? user.dgsaMembershipId ?? null : null,
   });
 });
 
@@ -86,6 +87,7 @@ export const purchaseMembership = asyncHandler(async (req, res) => {
   });
 
   req.user.tier = "dgsa";
+  if (!req.user.dgsaMembershipId) req.user.dgsaMembershipId = await createMembershipId();
   await req.user.save();
 
   res.status(201).json({

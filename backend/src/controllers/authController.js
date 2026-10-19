@@ -1,17 +1,8 @@
 import bcrypt from "bcryptjs";
-import { randomInt } from "crypto";
 import User from "../models/User.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { asString, isEmail, hasDigits, passwordProblems, publicUser } from "../utils/validators.js";
 import { setAuthCookie, cookieOptions } from "../middleware/auth.js";
-
-async function createMembershipId() {
-  for (let attempt = 0; attempt < 10; attempt += 1) {
-    const membershipId = randomInt(100000, 1000000);
-    if (!(await User.exists({ dgsaMembershipId: membershipId }))) return membershipId;
-  }
-  throw new Error("Unable to allocate a unique DGSA membership ID.");
-}
 
 // POST /api/auth/signup  { name, email, password }
 export const signup = asyncHandler(async (req, res) => {
@@ -35,7 +26,6 @@ export const signup = asyncHandler(async (req, res) => {
     name,
     email,
     passwordHash: await bcrypt.hash(password, 12),
-    dgsaMembershipId: await createMembershipId(),
   });
 
   setAuthCookie(res, user);

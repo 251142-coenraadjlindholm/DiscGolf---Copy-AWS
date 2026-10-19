@@ -44,14 +44,20 @@ export const create = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return bad(404, "email", `Email not found. ${email} must create an account.`);
 
-    // Every player must provide the six-digit ID issued to their account.
-    if (!/^\d{6}$/.test(membershipId) || Number(membershipId) !== user.dgsaMembershipId)
-      return bad(400, "membershipId", `The DGSA membership ID doesn't match ${email}.`);
+    const hasMembershipId = /^\d{6}$/.test(membershipId);
+    if (
+      membershipId &&
+      (user.tier !== "dgsa" || !hasMembershipId || Number(membershipId) !== user.dgsaMembershipId)
+    ) {
+      return bad(400, "membershipId", `${email} does not have a matching active DGSA membership.`);
+    }
+    const receivesMemberDiscount =
+      user.tier === "dgsa" && hasMembershipId && Number(membershipId) === user.dgsaMembershipId;
 
     if (await Registration.exists({ event: event._id, user: user._id }))
       return bad(409, "email", `${email} is already registered for this event.`);
 
-    amount += user.tier === "dgsa" ? event.priceMember : event.priceNonMember; // price comes from the server, not the browser
+    amount += receivesMemberDiscount ? event.priceMember : event.priceNonMember;
     players.push({ user, division });
   }
 

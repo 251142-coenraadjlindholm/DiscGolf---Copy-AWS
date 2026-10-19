@@ -26,7 +26,7 @@ export const publicUser = (u) => ({
   role: u.role,
   tier: u.tier,
   status: u.status,
-  dgsaMembershipId: u.dgsaMembershipId,
+  dgsaMembershipId: u.tier === "dgsa" ? u.dgsaMembershipId ?? null : null,
   avatarUrl: u.avatarUrl || null,
 });
 
