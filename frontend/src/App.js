@@ -20,7 +20,9 @@ import eventImageSix from "./assets/images/image6.png";
 import tournamenthighlight from "./assets/images/Highlight Image.png";
 import dgsaLogo from "./assets/images/discgolf_logo.png";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_URL =
+  process.env.REACT_APP_API_URL ||
+  (process.env.NODE_ENV === "production" ? window.location.origin : "http://localhost:5000");
 
 /*Data Given for the App from the figma file*/
 const Events = [
