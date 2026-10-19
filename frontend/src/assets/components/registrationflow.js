@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import RegistrationPage from "../../pages/registrationpage";
 import RegistrantDetailsPage from "../../pages/registrationdetailspage";
 import PaymentPage from "../../pages/registrationpaymentpage";
 import { useAuth } from "../../context/AuthContext";
+import logo from "../images/discgolf_logo.png";
+import "../../Styling/registrationconfirmation.css";
 
 const FEE_PER_PLAYER = 300; // R300 shown in the design: confirm if this is per player or a flat fee
 
@@ -82,5 +85,25 @@ export default function RegistrationFlow({ onBackToDashboard }) {
     );
   }
 
-  return <p>Registration complete.</p>; // replace with your confirmation page
+  return (
+    <main className="registrationConfirmation">
+      <section className="registrationConfirmation__card" aria-labelledby="registration-confirmation-title">
+        <Link to="/" className="registrationConfirmation__logo" aria-label="Return to the home screen">
+          <img src={logo} alt="Disc Golf South Africa" />
+        </Link>
+        <div className="registrationConfirmation__check" aria-hidden="true">✓</div>
+        <p className="registrationConfirmation__eyebrow">Tournament registration</p>
+        <h1 id="registration-confirmation-title">Registration complete</h1>
+        <p className="registrationConfirmation__message">
+          Your registration and proof of payment have been submitted successfully.
+        </p>
+        <p className="registrationConfirmation__note">
+          We&apos;ll review your payment and contact you if anything else is needed.
+        </p>
+        <Link to="/" className="registrationConfirmation__button">
+          Return to home
+        </Link>
+      </section>
+    </main>
+  );
 }
