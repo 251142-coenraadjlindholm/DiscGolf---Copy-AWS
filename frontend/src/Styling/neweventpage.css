@@ -2,8 +2,8 @@
   min-height: 100vh;
   padding: 32px 16px;
   background:
-    linear-gradient(135deg, rgba(8, 51, 125, 0.88), rgba(6, 22, 51, 0.98)),
-    var(--navy);
+    linear-gradient(135deg, rgba(8, 51, 125, 0.62), rgba(6, 22, 51, 0.72)),
+    transparent;
   color: var(--white);
   font-family: var(--font-body);
 }

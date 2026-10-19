@@ -18,7 +18,7 @@
 
 /* Member: light page, dark inner panel */
 .dash--member {
-  background: #b3c4e6;
+  background: rgba(179, 196, 230, 0.58);
   --dash-panel-bg: rgba(255, 255, 255, 0.35);
   --dash-inner: #3b4668;
   --dash-inner-text: #ffffff;
@@ -27,7 +27,7 @@
 }
 /* Admin: dark page, light inner panel */
 .dash--admin {
-  background: #38456e;
+  background: rgba(56, 69, 110, 0.58);
   --dash-panel-bg: rgba(255, 255, 255, 0.12);
   --dash-inner: #a7b0d3;
   --dash-inner-text: #1b2a52;
