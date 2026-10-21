@@ -33,6 +33,14 @@ app.use("/uploads/posters", express.static(POSTERS_DIR, { maxAge: "7d" }));
 app.get("/uploads/posters/:filename", async (req, res, next) => {
   try {
     const upload = await Upload.findOne({ filename: req.params.filename, kind: "poster" }).select("contentType data");
+    if (!upload && req.params.filename === "seed-placeholder.jpg") {
+      return res
+        .type("image/svg+xml")
+        .set("Cache-Control", "public, max-age=604800")
+        .send(
+          `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675"><rect width="1200" height="675" fill="#071b3a"/><text x="600" y="320" fill="#ff7a00" font-family="Arial,sans-serif" font-size="54" text-anchor="middle">Disc Golf South Africa</text><text x="600" y="390" fill="#fff" font-family="Arial,sans-serif" font-size="28" text-anchor="middle">Event poster coming soon</text></svg>`
+        );
+    }
     if (!upload) return res.status(404).json({ message: "Poster not found." });
     res.type(upload.contentType).set("Cache-Control", "public, max-age=604800").send(upload.data);
   } catch (error) {
