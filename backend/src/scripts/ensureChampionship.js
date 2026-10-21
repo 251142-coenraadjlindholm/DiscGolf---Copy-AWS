@@ -15,7 +15,7 @@ try {
       $set: {
         location: "Inanda Country Base, Kyalami",
         description: "The inaugural PDGA African Disc Golf Championship hosted by Disc Golf South Africa.",
-        posterUrl: "/uploads/posters/seed-placeholder.jpg",
+        posterUrl: "/upcoming-event-poster.png",
         pdgaTier: "C-Tier",
         startsAt: new Date("2026-11-06T05:00:00.000Z"),
         endsAt: new Date("2026-11-08T15:00:00.000Z"),
