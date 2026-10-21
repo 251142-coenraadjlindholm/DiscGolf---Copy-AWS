@@ -19,8 +19,8 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" },
   contentSecurityPolicy: {
     directives: {
-      "script-src": ["'self'", "'unsafe-inline'", "https://www.googletagmanager.com"],
-      "connect-src": ["'self'", "https://www.google-analytics.com", "https://analytics.google.com"],
+    "script-src": ["'self'", "'unsafe-inline'"],
+    "connect-src": ["'self'"],
     },
   },
 })); // lets the React app show poster images

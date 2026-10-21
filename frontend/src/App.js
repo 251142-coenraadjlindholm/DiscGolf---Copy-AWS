@@ -387,7 +387,6 @@ function SignUpRoute() {
           });
           const result = await response.json();
           if (!response.ok) return { ok: false, ...result };
-          window.gtag?.("event", "sign_up", { method: "email" });
         } catch {
           return { ok: false, field: "email", message: "Unable to connect to the backend." };
         }
