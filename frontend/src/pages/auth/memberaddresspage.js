@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import AuthLayout from "./AuthLayout";
 import memberHero from "../../assets/member-hero.jpg";
-import "./MemberAddressPage.css";
+import "../../Styling/memberaddresspage.css";
 
 /**
  * All fields are treated as required (the design doesn't mark any as optional).

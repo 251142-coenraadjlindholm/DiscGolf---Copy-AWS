@@ -42,7 +42,7 @@
 .tier-card__name {
   margin: 0;
   text-align: center;
-  color: var(--reg-orange);
+  color: var(--orange);
   font-family: var(--reg-font-display);
   font-size: 1.6rem;
   font-weight: 800;
@@ -54,7 +54,7 @@
   font-size: 2rem;
   font-weight: 800;
 }
-.tier-card__desc { margin: 0; font-size: 0.75rem; color: var(--reg-muted); }
+.tier-card__desc { margin: 0; font-size: 0.75rem; color: rgba(255, 255, 255, 0.72); }
 
 .tier-card__perks {
   margin: 0;

@@ -53,6 +53,7 @@
   font-family: var(--font-display, sans-serif);
   font-size: clamp(2rem, 5vw, 3.25rem);
   text-transform: uppercase;
+  color: var(--orange, #ff9e00);
 }
 
 .registrationConfirmation__message {

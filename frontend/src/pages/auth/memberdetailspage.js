@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import AuthLayout from "./AuthLayout";
 import memberHero from "../../assets/member-hero.jpg"; // export from Figma
-import "./MemberDetailsPage.css";
+import "../../Styling/memberdetailpage.css";
 
 // The annotation doesn't list the gender options: replace with the ones from your brief
 const GENDERS = ["Male", "Female", "Other"];

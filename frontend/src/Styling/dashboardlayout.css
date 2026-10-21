@@ -94,6 +94,7 @@
 /* Main area + header */
 .dash__main {
   min-width: 0;
+  overflow: hidden;
   padding: 16px;
   border-radius: 14px;
   background: var(--dash-inner);
@@ -123,6 +124,7 @@
   text-transform: uppercase;
 }
 .dash__actions { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.dash__actions > * { min-width: 0; }
 
 /* Cards */
 .dash-card {
@@ -153,6 +155,7 @@
   text-transform: uppercase;
 }
 .dash-table td, .dash-table th { padding: 5px 6px; border-color: rgba(27, 42, 82, 0.15); vertical-align: middle; }
+.dash-table { white-space: nowrap; }
 .dash-link { color: var(--dash-link); font-size: 0.72rem; text-decoration: underline; }
 .dash-link:hover { color: var(--dash-orange); }
 
@@ -164,13 +167,28 @@
 .status--pending { color: #7b1fa2; }
 
 @media (max-width: 767px) {
-  .dash__panel { grid-template-columns: 1fr; }
-  .dash__sidebar { flex-direction: row; padding: 8px 14px; }
+  .dash { align-items: flex-start; padding: 16px 10px; }
+  .dash__panel { grid-template-columns: 1fr; padding: 10px; }
+  .dash__sidebar {
+    min-width: 0;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 8px 10px;
+  }
   .dash__logo { width: 44px; margin: 0 14px 0 0; }
-  .dash__nav { flex-direction: row; }
-  .dash__sidebar-bottom { padding: 0 0 0 14px; border-top: 0; border-left: 1px solid var(--dash-sidebar-icon); }
+  .dash__nav { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+  .dash__sidebar-bottom { margin-left: auto; padding: 0 0 0 10px; border-top: 0; border-left: 1px solid var(--dash-sidebar-icon); }
   .dash__header { flex-wrap: wrap; }
-  .dash__actions { margin-left: 0; width: 100%; }
+  .dash__actions { margin-left: 0; width: 100%; min-width: 0; flex-wrap: wrap; }
+  .dash__actions > * { max-width: 100%; }
+  .dash__actions .dash-search-wrap,
+  .dash__actions .dash-search.form-control {
+    width: 100%;
+  }
+  .dash__actions .dash-search.form-control {
+    flex: 1 1 10rem;
+  }
 }
 
 /* Landing-page brand treatment */
@@ -228,3 +246,55 @@
 .dash-card { border: 1px solid rgba(6, 22, 51, 0.12); }
 .dash-add-btn { background: var(--orange); color: var(--navy); }
 .dash-add-btn:hover { background: var(--peach); color: var(--navy); }
+
+/* Final dashboard surface overrides: Bootstrap must not turn these cards white. */
+.dash-card,
+.dash-card.card {
+  --bs-card-bg: #061633 !important;
+  --bs-card-color: #fff !important;
+  --bs-card-border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #fff !important;
+  background: #061633 !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.dash-card .card-body {
+  color: #fff !important;
+  background: transparent !important;
+}
+
+.dash-card__title {
+  color: #ff9e00 !important;
+}
+
+.dash-table,
+.dash-table > :not(caption) > * > * {
+  --bs-table-bg: transparent !important;
+  --bs-table-color: #fff !important;
+  --bs-table-border-color: rgba(255, 255, 255, 0.16) !important;
+  color: #fff !important;
+  background-color: transparent !important;
+}
+
+.dash-table thead th {
+  color: #ff9e00 !important;
+  background-color: #061633 !important;
+}
+
+.dash-table tbody tr:hover > * {
+  color: #fff !important;
+  background-color: rgba(255, 158, 0, 0.12) !important;
+}
+
+.dash-card .dash-empty {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.dash-card .dash-link {
+  color: #ff9e00 !important;
+}
+
+.dash-card .dash-link:hover,
+.dash-card .dash-link:focus-visible {
+  color: #ffc46b !important;
+}
