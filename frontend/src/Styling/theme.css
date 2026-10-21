@@ -83,6 +83,59 @@
   max-width: 100%;
 }
 
+.memberPaymentLayoutPage,
+.memberPaymentLayoutPage .form-control,
+.memberPaymentLayoutPage .form-select {
+  color: var(--white) !important;
+}
+
+.memberPaymentLayoutPage {
+  background: rgba(6, 22, 51, 0.84);
+}
+
+.memberPaymentLayoutPage .memberPaymentSummary {
+  color: var(--white);
+  background: rgba(8, 51, 125, 0.34);
+}
+
+.memberPaymentLayoutPage .memberPaymentInput {
+  color: var(--white) !important;
+  background-color: rgba(6, 22, 51, 0.62) !important;
+  border-color: rgba(255, 255, 255, 0.58) !important;
+}
+
+.memberPaymentLayoutPage .memberPaymentInput::placeholder {
+  color: rgba(255, 255, 255, 0.72) !important;
+}
+
+.memberPaymentLayoutPage .memberPaymentInput:focus {
+  color: var(--white) !important;
+  background-color: rgba(6, 22, 51, 0.85) !important;
+  border-color: var(--orange) !important;
+}
+
+.memberPaymentLayoutPage .memberPaymentButton {
+  color: var(--navy) !important;
+  background: var(--orange) !important;
+  border-color: var(--orange) !important;
+}
+
+@media (max-width: 800px) {
+  .memberPaymentLayoutPage .memberPaymentSummary {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .memberPaymentLayoutPage .mpay__details div {
+    flex-wrap: wrap;
+  }
+
+  .memberPaymentLayoutPage .mpay__amount {
+    align-items: flex-start;
+    margin-top: 1rem;
+  }
+}
+
 .reg-card,
 .tier-card,
 .newev__panel,
