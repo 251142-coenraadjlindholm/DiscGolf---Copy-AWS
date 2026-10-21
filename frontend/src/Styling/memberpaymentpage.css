@@ -144,7 +144,44 @@
   }
   .memberPaymentLogoPage { top: 1.25rem; left: 1.25rem; }
   .memberPaymentLogoPage img { width: 6rem; }
-  .memberPaymentContentPage { padding: 2rem 1rem; }
+  .memberPaymentContentPage { padding: 1.5rem 0.75rem; }
+
+  .memberPaymentSummary {
+    margin-bottom: 1.25rem;
+    padding: 0.85rem;
+  }
+
+  .mpay__heading {
+    margin-bottom: 0.65rem;
+    font-size: 1.05rem;
+  }
+
+  .mpay__details {
+    font-size: 0.78rem;
+    line-height: 1.35;
+  }
+
+  .mpay__details div {
+    display: grid;
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+    gap: 0.35rem;
+    align-items: baseline;
+    margin-bottom: 0.2rem;
+  }
+
+  .mpay__details dt,
+  .mpay__details dd {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .mpay__amount {
+    margin-top: 0.85rem;
+    padding-top: 0.75rem;
+  }
+
+  .mpay__amount-label { font-size: 0.78rem; }
+  .mpay__amount-value { font-size: 2rem; line-height: 1.1; }
 }
 
 @media (min-width: 801px) {
