@@ -114,11 +114,12 @@ export default function AdminDashboardPage() {
           throw new Error(body.message || `The proof of payment could not be loaded (${response.status}).`);
         }
         const blob = await response.blob();
-        if (!blob.type.startsWith("image/") && blob.type !== "application/pdf") {
+        const contentType = (response.headers.get("content-type") || blob.type || "").split(";")[0].toLowerCase();
+        if (!contentType.startsWith("image/") && contentType !== "application/pdf") {
           throw new Error("The uploaded proof is not a supported image or PDF.");
         }
         objectUrl = URL.createObjectURL(blob);
-        if (alive) setProofAsset({ status: "ready", url: objectUrl, type: blob.type });
+        if (alive) setProofAsset({ status: "ready", url: objectUrl, type: contentType });
       })
       .catch((loadError) => {
         if (alive) {
@@ -345,7 +346,14 @@ export default function AdminDashboardPage() {
                 />
               )}
               {proofAsset.status === "ready" && proofAsset.type.startsWith("image/") && (
-                <img src={proofAsset.url} alt={`Proof of payment from ${proofPreview.name}`} />
+                <img
+                  src={proofAsset.url}
+                  alt={`Proof of payment from ${proofPreview.name}`}
+                  onError={() => {
+                    setProofAsset({ status: "error", url: "", type: "" });
+                    setProofError("The proof file was received, but this image could not be displayed.");
+                  }}
+                />
               )}
             </div>
           </section>

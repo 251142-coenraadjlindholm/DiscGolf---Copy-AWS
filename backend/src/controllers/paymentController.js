@@ -60,18 +60,19 @@ export const proof = asyncHandler(async (req, res) => {
   if (req.user.role !== "admin" && !isOwner) return res.status(403).json({ message: "Not allowed." });
 
   // The file name comes from the database, never from the request.
+  const upload = await Upload.findOne({ filename: payment.proofFile, kind: "proof" }).select("contentType data");
+  if (upload) {
+    res.type(upload.contentType).send(upload.data);
+    return;
+  }
+
   const proofPath = path.join(PROOFS_DIR, payment.proofFile);
   try {
     await fs.access(proofPath);
   } catch {
-    const upload = await Upload.findOne({ filename: payment.proofFile, kind: "proof" }).select("contentType data");
-    if (!upload) {
-      return res.status(404).json({
-        message: "This proof file is no longer available. Please upload the proof again.",
-      });
-    }
-    res.type(upload.contentType).send(upload.data);
-    return;
+    return res.status(404).json({
+      message: "This proof file is no longer available. Please upload the proof again.",
+    });
   }
 
   res.sendFile(proofPath, (err) => {
