@@ -196,6 +196,22 @@
   object-fit: contain;
 }
 
+.proof-preview__document {
+  width: 100%;
+  min-height: min(65vh, 42rem);
+  border: 0;
+  background: var(--white);
+}
+
+.proof-preview__status {
+  margin: 0;
+  color: var(--white);
+}
+
+.proof-preview__status--error {
+  color: #ff8b8b;
+}
+
 @media (max-width: 600px) {
   .proof-preview {
     padding: 0.5rem;
