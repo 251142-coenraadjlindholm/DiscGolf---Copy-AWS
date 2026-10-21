@@ -1,6 +1,5 @@
 import bcrypt from "bcryptjs";
 import User from "../models/User.js";
-import { nextSequence } from "../models/Counter.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { asString, isEmail, hasDigits, passwordProblems, publicUser } from "../utils/validators.js";
 import { setAuthCookie, cookieOptions } from "../middleware/auth.js";
@@ -27,7 +26,6 @@ export const signup = asyncHandler(async (req, res) => {
     name,
     email,
     passwordHash: await bcrypt.hash(password, 12),
-    dgsaMembershipId: await nextSequence("dgsaMembershipId"),
   });
 
   setAuthCookie(res, user);

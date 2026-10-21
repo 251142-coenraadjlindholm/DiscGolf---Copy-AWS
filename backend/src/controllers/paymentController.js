@@ -1,9 +1,12 @@
 import path from "node:path";
+import fs from "node:fs/promises";
 import mongoose from "mongoose";
 import Payment from "../models/Payment.js";
 import User from "../models/User.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { PAYMENT_STATUSES, PROOFS_DIR } from "../config/constants.js";
+import { createMembershipId } from "../utils/membership.js";
+import Upload from "../models/Upload.js";
 
 // GET /api/admin/payments  (Live Payment Feed)
 export const adminList = asyncHandler(async (req, res) => {
@@ -36,7 +39,12 @@ export const updateStatus = asyncHandler(async (req, res) => {
 
   // Assumption: a membership payment marked "on time" makes the person a DGSA member
   if (payment.type === "membership" && status === "on_time") {
-    await User.findByIdAndUpdate(payment.user, { tier: "dgsa" });
+    const user = await User.findById(payment.user);
+    if (user) {
+      user.tier = "dgsa";
+      if (!user.dgsaMembershipId) user.dgsaMembershipId = await createMembershipId();
+      await user.save();
+    }
   }
 
   res.json({ id: payment._id, status: payment.status });
@@ -51,8 +59,23 @@ export const proof = asyncHandler(async (req, res) => {
   const isOwner = payment.user.equals(req.user._id);
   if (req.user.role !== "admin" && !isOwner) return res.status(403).json({ message: "Not allowed." });
 
-  // The file name comes from the database, never from the request
-  res.sendFile(path.join(PROOFS_DIR, payment.proofFile), (err) => {
-    if (err && !res.headersSent) res.status(404).json({ message: "File not found." });
+  // The file name comes from the database, never from the request.
+  const upload = await Upload.findOne({ filename: payment.proofFile, kind: "proof" }).select("contentType data");
+  if (upload) {
+    res.type(upload.contentType).send(upload.data);
+    return;
+  }
+
+  const proofPath = path.join(PROOFS_DIR, payment.proofFile);
+  try {
+    await fs.access(proofPath);
+  } catch {
+    return res.status(404).json({
+      message: "This proof file is no longer available. Please upload the proof again.",
+    });
+  }
+
+  res.sendFile(proofPath, (err) => {
+    if (err && !res.headersSent) res.status(404).json({ message: "Unable to send the proof file." });
   });
 });

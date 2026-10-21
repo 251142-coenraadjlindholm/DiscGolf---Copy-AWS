@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
-import AuthLayout from "./AuthLayout";
-import memberHero from "../../assets/member-hero.jpg";
-import "./MemberAddressPage.css";
+import AuthLayout from "./authlayout";
+import memberHero from "../../assets/images/become_a_member_image.png";
+import "../../Styling/memberaddresspage.css";
 
 /**
  * All fields are treated as required (the design doesn't mark any as optional).
@@ -43,7 +43,7 @@ export default function MemberAddressPage({ data, onChange, onBack, onNext }) {
   );
 
   return (
-    <AuthLayout title="Become a Member" image={memberHero} imageAlt="Disc golfer in a South Africa jersey">
+    <AuthLayout pagePrefix="memberPayment" title="Become a Member" image={memberHero} imageAlt="Disc golfer in a South Africa jersey">
       <Form onSubmit={handleNext} noValidate className="d-flex flex-column gap-3 flex-grow-1">
         <Form.Group controlId="homeAddress">
           {field("homeAddress", "Home Address", (e) => onChange({ ...data, homeAddress: e.target.value }))}

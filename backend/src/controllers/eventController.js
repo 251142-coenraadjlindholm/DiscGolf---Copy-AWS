@@ -3,6 +3,7 @@ import Event from "../models/Event.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { reject } from "../utils/respond.js";
 import { asString, eventDTO } from "../utils/validators.js";
+import { storeUpload } from "../utils/storeUpload.js";
 
 const upcomingFilter = () => {
   const now = new Date();
@@ -61,6 +62,7 @@ export const create = asyncHandler(async (req, res) => {
   const priceMember = Number(b.priceMember);
   if (!Number.isFinite(priceNonMember) || priceNonMember < 0) return bad("priceNonMember", "Enter the non-member price.");
   if (!Number.isFinite(priceMember) || priceMember < 0) return bad("priceMember", "Enter the DGSA member price.");
+  await storeUpload(req.file, "poster");
 
   const event = await Event.create({
     name, location, description, bankDetails, pdgaTier,

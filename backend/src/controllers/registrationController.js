@@ -7,6 +7,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { reject } from "../utils/respond.js";
 import { asString, isEmail } from "../utils/validators.js";
 import { DIVISIONS, MAX_REGISTRANTS } from "../config/constants.js";
+import { storeUpload } from "../utils/storeUpload.js";
 
 // POST /api/events/:eventId/registrations
 // multipart: proof (file) + registrants (JSON string: [{ email, membershipId?, division? }])
@@ -44,14 +45,20 @@ export const create = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return bad(404, "email", `Email not found. ${email} must create an account.`);
 
-    // The membership ID is optional, but if it's given it must be the one issued to that account
-    if (membershipId && Number(membershipId) !== user.dgsaMembershipId)
-      return bad(400, "membershipId", `The DGSA membership ID doesn't match ${email}.`);
+    const hasMembershipId = /^\d{6}$/.test(membershipId);
+    if (
+      membershipId &&
+      (user.tier !== "dgsa" || !hasMembershipId || Number(membershipId) !== user.dgsaMembershipId)
+    ) {
+      return bad(400, "membershipId", `${email} does not have a matching active DGSA membership.`);
+    }
+    const receivesMemberDiscount =
+      user.tier === "dgsa" && hasMembershipId && Number(membershipId) === user.dgsaMembershipId;
 
     if (await Registration.exists({ event: event._id, user: user._id }))
       return bad(409, "email", `${email} is already registered for this event.`);
 
-    amount += user.tier === "dgsa" ? event.priceMember : event.priceNonMember; // price comes from the server, not the browser
+    amount += receivesMemberDiscount ? event.priceMember : event.priceNonMember;
     players.push({ user, division });
   }
 
@@ -62,6 +69,7 @@ export const create = asyncHandler(async (req, res) => {
     amount,
     proofFile: req.file.filename,
   });
+  await storeUpload(req.file, "proof");
 
   try {
     await Registration.insertMany(

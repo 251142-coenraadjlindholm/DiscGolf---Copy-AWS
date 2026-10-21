@@ -41,6 +41,9 @@ export default function AdminDashboardPage() {
   const [regSearch, setRegSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [proofPreview, setProofPreview] = useState(null);
+  const [proofAsset, setProofAsset] = useState({ status: "idle", url: "", type: "" });
+  const [proofError, setProofError] = useState("");
 
   const loadMembers = useCallback(async () => {
     const r = await getAdminMembers();
@@ -89,6 +92,48 @@ export default function AdminDashboardPage() {
   );
   const selectedEvent = events.find((e) => e.id === eventId);
 
+  const openProof = (payment) => {
+    setProofPreview({ id: payment.id, name: payment.name });
+    setProofAsset({ status: "loading", url: "", type: "" });
+    setProofError("");
+  };
+
+  useEffect(() => {
+    if (!proofPreview) {
+      setProofAsset({ status: "idle", url: "", type: "" });
+      setProofError("");
+      return undefined;
+    }
+
+    let alive = true;
+    let objectUrl = "";
+    fetch(proofUrl(proofPreview.id), { credentials: "include" })
+      .then(async (response) => {
+        if (!response.ok) {
+          const body = await response.json().catch(() => ({}));
+          throw new Error(body.message || `The proof of payment could not be loaded (${response.status}).`);
+        }
+        const blob = await response.blob();
+        const contentType = (response.headers.get("content-type") || blob.type || "").split(";")[0].toLowerCase();
+        if (!contentType.startsWith("image/") && contentType !== "application/pdf") {
+          throw new Error("The uploaded proof is not a supported image or PDF.");
+        }
+        objectUrl = URL.createObjectURL(blob);
+        if (alive) setProofAsset({ status: "ready", url: objectUrl, type: contentType });
+      })
+      .catch((loadError) => {
+        if (alive) {
+          setProofAsset({ status: "error", url: "", type: "" });
+          setProofError(loadError.message);
+        }
+      });
+
+    return () => {
+      alive = false;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [proofPreview]);
+
   const actions = (
     <>
       <div className="dash-search-wrap">
@@ -133,9 +178,9 @@ export default function AdminDashboardPage() {
                             {p.type === "membership" ? <PersonVcard aria-hidden="true" /> : <CalendarEvent aria-hidden="true" />}
                             {p.type === "membership" ? "Membership" : "Event"}
                           </p>
-                          <a href={proofUrl(p.id)} target="_blank" rel="noopener noreferrer" className="dash-link">
+                          <button type="button" className="dash-link dash-link-button" onClick={() => openProof(p)}>
                             Proof of Payment
-                          </a>
+                          </button>
                         </div>
                         <div className="pay-item__side">
                           <span className={`status status--${p.status}`}>{STATUS_LABEL[p.status]}</span>
@@ -152,7 +197,7 @@ export default function AdminDashboardPage() {
                                 </Dropdown.Item>
                               ))}
                               <Dropdown.Divider />
-                              <Dropdown.Item as="a" href={proofUrl(p.id)} target="_blank" rel="noopener noreferrer">
+                              <Dropdown.Item as="button" onClick={() => openProof(p)}>
                                 View proof of payment
                               </Dropdown.Item>
                             </Dropdown.Menu>
@@ -248,9 +293,13 @@ export default function AdminDashboardPage() {
                             <td><TierBadge tier={r.tier} /></td>
                             <td>{r.tournament}</td>
                             <td>
-                              <a href={proofUrl(r.paymentId)} target="_blank" rel="noopener noreferrer" className="dash-link">
+                              <button
+                                type="button"
+                                className="dash-link dash-link-button"
+                                onClick={() => openProof({ id: r.paymentId, name: r.name })}
+                              >
                                 Proof of Payment
-                              </a>
+                              </button>
                             </td>
                           </tr>
                         ))}
@@ -262,6 +311,53 @@ export default function AdminDashboardPage() {
             </Card>
           </Col>
         </Row>
+      )}
+      {proofPreview && (
+        <div className="proof-preview" role="dialog" aria-modal="true" aria-labelledby="proof-preview-title">
+          <button
+            type="button"
+            className="proof-preview__backdrop"
+            aria-label="Close proof preview"
+            onClick={() => setProofPreview(null)}
+          />
+          <section className="proof-preview__dialog">
+            <header className="proof-preview__header">
+              <div>
+                <p className="proof-preview__eyebrow">Payment proof</p>
+                <h2 id="proof-preview-title">{proofPreview.name}</h2>
+              </div>
+              <button type="button" className="proof-preview__close" onClick={() => setProofPreview(null)}>
+                <XLg aria-hidden="true" />
+                <span className="visually-hidden">Close proof preview</span>
+              </button>
+            </header>
+            <div className="proof-preview__body">
+              {proofAsset.status === "loading" && <p className="proof-preview__status">Loading proof…</p>}
+              {proofAsset.status === "error" && (
+                <p className="proof-preview__status proof-preview__status--error">
+                  {proofError || "Unable to load this proof of payment."}
+                </p>
+              )}
+              {proofAsset.status === "ready" && proofAsset.type === "application/pdf" && (
+                <iframe
+                  className="proof-preview__document"
+                  src={proofAsset.url}
+                  title={`Proof of payment from ${proofPreview.name}`}
+                />
+              )}
+              {proofAsset.status === "ready" && proofAsset.type.startsWith("image/") && (
+                <img
+                  src={proofAsset.url}
+                  alt={`Proof of payment from ${proofPreview.name}`}
+                  onError={() => {
+                    setProofAsset({ status: "error", url: "", type: "" });
+                    setProofError("The proof file was received, but this image could not be displayed.");
+                  }}
+                />
+              )}
+            </div>
+          </section>
+        </div>
       )}
     </DashboardLayout>
   );

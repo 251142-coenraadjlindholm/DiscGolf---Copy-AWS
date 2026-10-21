@@ -35,7 +35,7 @@ const annemay = await mk("Annémay Fogwill", "annemay@example.test", { mobile: "
 const robbie = await mk("Robbie Le Roux", "robbie@example.test");
 
 // Poster files don't exist for seeded events: add real images in uploads/posters to see them
-const poster = "/uploads/posters/seed-placeholder.jpg";
+const poster = "/upcoming-event-poster.png";
 const at = (iso) => new Date(`${iso}+02:00`);
 const ev = (name, startsAt, endsAt) =>
   Event.create({

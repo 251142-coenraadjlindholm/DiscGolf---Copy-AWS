@@ -4,14 +4,20 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { reject } from "../utils/respond.js";
 import { asString, isEmail, hasDigits, isZip } from "../utils/validators.js";
 import { DIVISIONS, MEMBERSHIP_FEE } from "../config/constants.js";
+import { createMembershipId } from "../utils/membership.js";
+import { storeUpload } from "../utils/storeUpload.js";
 
 // GET /api/users/lookup?email=   (logged-in users registering other players)
 export const lookupByEmail = asyncHandler(async (req, res) => {
   const email = asString(req.query.email).toLowerCase();
   if (!isEmail(email)) return res.status(400).json({ message: "Enter a valid email address." });
 
-  const user = await User.findOne({ email }).select("tier");
-  res.json({ exists: Boolean(user), tier: user?.tier ?? null }); // never returns anything else about the person
+  const user = await User.findOne({ email }).select("tier dgsaMembershipId");
+  res.json({
+    exists: Boolean(user),
+    tier: user?.tier ?? null,
+    membershipId: user?.tier === "dgsa" ? user.dgsaMembershipId ?? null : null,
+  });
 });
 
 // POST /api/users/membership   multipart: details + address fields + proof file
@@ -56,6 +62,7 @@ export const submitMembership = asyncHandler(async (req, res) => {
 
   Object.assign(req.user, { gender, dob: dobDate, saId, passport, mobile, usualDivision, address });
   await req.user.save();
+  await storeUpload(req.file, "proof");
 
   await Payment.create({
     user: req.user._id,
@@ -65,6 +72,40 @@ export const submitMembership = asyncHandler(async (req, res) => {
   });
 
   res.status(201).json({ message: "Membership submitted. We'll check your payment." });
+});
+
+// POST /api/users/membership/purchase (demo purchase; no real payment is processed)
+export const purchaseMembership = asyncHandler(async (req, res) => {
+  if (req.user.tier === "dgsa") {
+    return res.status(409).json({ message: "You already have a DGSA membership." });
+  }
+
+  const payment = await Payment.create({
+    user: req.user._id,
+    type: "membership",
+    amount: MEMBERSHIP_FEE,
+    proofFile: "demo-membership-purchase",
+    status: "on_time",
+  });
+
+  req.user.tier = "dgsa";
+  if (!req.user.dgsaMembershipId) req.user.dgsaMembershipId = await createMembershipId();
+  await req.user.save();
+
+  res.status(201).json({
+    message: "DGSA membership activated.",
+    paymentId: payment._id,
+    user: {
+      id: req.user._id,
+      name: req.user.name,
+      email: req.user.email,
+      role: req.user.role,
+      tier: req.user.tier,
+      status: req.user.status,
+      dgsaMembershipId: req.user.dgsaMembershipId,
+      avatarUrl: req.user.avatarUrl || null,
+    },
+  });
 });
 
 // GET /api/admin/members

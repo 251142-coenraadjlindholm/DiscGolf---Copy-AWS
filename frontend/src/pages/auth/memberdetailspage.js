@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
-import AuthLayout from "./AuthLayout";
-import memberHero from "../../assets/member-hero.jpg"; // export from Figma
-import "./MemberDetailsPage.css";
+import AuthLayout from "./authlayout";
+import memberHero from "../../assets/images/become_a_member_image.png";
+import "../../Styling/memberdetailpage.css";
 
 // The annotation doesn't list the gender options: replace with the ones from your brief
 const GENDERS = ["Male", "Female", "Other"];
@@ -29,7 +29,7 @@ export default function MemberDetailsPage({ data, onChange, onBack, onNext }) {
   };
 
   return (
-    <AuthLayout title="Become a Member" image={memberHero} imageAlt="Disc golfer in a South Africa jersey">
+    <AuthLayout pagePrefix="memberPayment" title="Become a Member" image={memberHero} imageAlt="Disc golfer in a South Africa jersey">
       <Form onSubmit={handleNext} noValidate className="d-flex flex-column gap-3 flex-grow-1">
         <Row className="g-3">
           <Col xs={6}>

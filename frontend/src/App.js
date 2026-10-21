@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Link, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import DgsaNavbar from "./assets/components/navbar";
 import AnimatedBackground from "./assets/components/animatedbackground";
@@ -9,7 +9,11 @@ import AdminDashboardPage from "./pages/dashboard/admindashboardpage";
 import MemberDashboardPage from "./pages/dashboard/memberdashboardpage";
 import NewEventPage from "./pages/dashboard/neweventpage";
 import ProfilePage from "./pages/dashboard/profilepage";
+import MemberTierPage from "./pages/auth/membertierpage";
+import MembershipPaymentPage from "./pages/auth/memberpaymentpage";
+import { purchaseMembership } from "./services/api";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { getEvents } from "./services/api";
 import './App.css';
 import tournamentPoster from "./assets/images/image1.png";
 import eventImageTwo from "./assets/images/image2.png";
@@ -20,7 +24,9 @@ import eventImageSix from "./assets/images/image6.png";
 import tournamenthighlight from "./assets/images/Highlight Image.png";
 import dgsaLogo from "./assets/images/discgolf_logo.png";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_URL =
+  process.env.REACT_APP_API_URL ||
+  (process.env.NODE_ENV === "production" ? window.location.origin : "http://localhost:5000");
 
 /*Data Given for the App from the figma file*/
 const Events = [
@@ -119,6 +125,24 @@ function Hero() {
 
 function Tournament() {
   const { user } = useAuth();
+  const [eventId, setEventId] = useState("");
+
+  useEffect(() => {
+    let alive = true;
+    if (!user) {
+      setEventId("");
+      return () => { alive = false; };
+    }
+    getEvents().then((result) => {
+      if (alive && result.ok) {
+        const event = result.data.events.find((item) =>
+          item.name?.toLowerCase().includes("african disc golf championship")
+        );
+        if (event) setEventId(event.id);
+      }
+    });
+    return () => { alive = false; };
+  }, [user]);
 
   return (
     <section id="tournament" className="section">
@@ -159,9 +183,22 @@ function Tournament() {
             <li>PDGA C-Tier</li>
           </ul>
 
-          <Link className="disc-button-tournament" to={user ? "/registration" : "/signup"}>
-            Join the tournament
-          </Link>
+          {user ? (
+            <Link
+              className={`disc-button-tournament${eventId ? "" : " disabled"}`}
+              to={eventId ? `/registration?eventId=${encodeURIComponent(eventId)}` : "#tournament"}
+              aria-disabled={!eventId}
+              onClick={(event) => {
+                if (!eventId) event.preventDefault();
+              }}
+            >
+              {eventId ? "Join the tournament" : "Tournament unavailable"}
+            </Link>
+          ) : (
+            <Link className="disc-button-tournament" to="/signup">
+              Join the tournament
+            </Link>
+          )}
         </div>
       </article>
     </section>
@@ -293,8 +330,9 @@ function HomePage() {
 
 function RegistrationRoute() {
   const navigate = useNavigate();
+  const eventId = new URLSearchParams(window.location.search).get("eventId");
 
-  return <RegistrationFlow onBackToDashboard={() => navigate("/")} />;
+  return <RegistrationFlow eventId={eventId} onBackToDashboard={() => navigate("/")} />;
 }
 
 function LoginRoute() {
@@ -349,6 +387,7 @@ function SignUpRoute() {
           });
           const result = await response.json();
           if (!response.ok) return { ok: false, ...result };
+          window.gtag?.("event", "sign_up", { method: "email" });
         } catch {
           return { ok: false, field: "email", message: "Unable to connect to the backend." };
         }
@@ -369,6 +408,7 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginRoute />} />
             <Route path="/signup" element={<SignUpRoute />} />
+            <Route path="/membership" element={<MembershipRoute />} />
             <Route path="/dashboard" element={<DashboardRoute />} />
             <Route path="/dashboard/profile" element={<ProtectedDashboardRoute />} />
             <Route path="/dashboard/payments" element={<AdminDashboardRoute />} />
@@ -386,6 +426,33 @@ function ProtectedDashboardRoute() {
   if (loading) return <p>Loading your profile…</p>;
   if (!user) return <Navigate to="/login" replace />;
   return <ProfilePage />;
+}
+
+function MembershipRoute() {
+  const { user, loading, setUser } = useAuth();
+  const navigate = useNavigate();
+  const [step, setStep] = useState("tiers");
+
+  if (loading) return <p>Loading membership options…</p>;
+  if (!user) return <Navigate to="/login" replace />;
+  if (user.tier === "dgsa") return <Navigate to="/dashboard/profile" replace />;
+
+  if (step === "payment") {
+    return (
+      <MembershipPaymentPage
+        onPay={async () => {
+          const result = await purchaseMembership();
+          if (result.ok) {
+            setUser(result.data.user);
+            navigate("/dashboard/profile");
+          }
+          return result;
+        }}
+      />
+    );
+  }
+
+  return <MemberTierPage onSelectFree={() => navigate("/dashboard")} onSelectMember={() => setStep("payment")} />;
 }
 
 function AdminDashboardRoute({ page }) {

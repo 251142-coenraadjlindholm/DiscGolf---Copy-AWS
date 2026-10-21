@@ -12,10 +12,17 @@ const PLAYER_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8];
  *  - No / nothing chosen -> single registration form
  *  - Yes                 -> player-count dropdown + Begin Registration
  */
-export default function RegistrationPage({ onSubmitSingle, onBeginMultiple, onBackToDashboard }) {
+export default function RegistrationPage({
+  onSubmitSingle,
+  onBeginMultiple,
+  onBackToDashboard,
+  initialEmail = "",
+  initialMembershipId = "",
+  error = "",
+}) {
   const [multiple, setMultiple] = useState(null); // "yes" | "no" | null
-  const [email, setEmail] = useState("");
-  const [membershipId, setMembershipId] = useState("");
+  const [email, setEmail] = useState(initialEmail);
+  const [membershipId, setMembershipId] = useState(initialMembershipId ? String(initialMembershipId) : "");
   const [proof, setProof] = useState(null);
   const [playerCount, setPlayerCount] = useState("");
   const [errors, setErrors] = useState({});
@@ -42,6 +49,7 @@ export default function RegistrationPage({ onSubmitSingle, onBeginMultiple, onBa
   return (
     <RegistrationLayout>
       <RegistrationTitle />
+      {error && <div className="alert alert-danger">{error}</div>}
 
       <Form.Group role="radiogroup" aria-labelledby="multiple-label" className="regplayerChoicePage">
       <Form.Label id="multiple-label" className="regplayerChoiceLabelPage mb-0">
@@ -94,11 +102,17 @@ export default function RegistrationPage({ onSubmitSingle, onBeginMultiple, onBa
             <Form.Control
               type="text"
               className="regplayerInputPage"
-              placeholder="DGSA Membership ID (optional)"
-              aria-label="DGSA Membership ID (optional)"
+              placeholder="DGSA Membership ID"
+              aria-label="DGSA Membership ID"
+              aria-describedby="membershipId-help"
               value={membershipId}
+              isInvalid={!!errors.membershipId}
               onChange={(e) => setMembershipId(e.target.value)}
             />
+            <Form.Text id="membershipId-help">
+              Optional. Enter your ID to receive the DGSA member discount.
+            </Form.Text>
+            <Form.Control.Feedback type="invalid">{errors.membershipId}</Form.Control.Feedback>
           </Form.Group>
 
           <p className="fw-semibold mb-0">Proof of Payment</p>

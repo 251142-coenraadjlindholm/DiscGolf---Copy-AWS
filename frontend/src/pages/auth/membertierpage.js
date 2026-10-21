@@ -1,7 +1,7 @@
 import { Container, Card, Row, Col, Button } from "react-bootstrap";
-import "../registration/RegistrationLayout.css"; // shared tokens and buttons
-import "./MemberTierPage.css";
-import logo from "../../assets/dgsa-logo.svg"; // export from Figma
+import "../../Styling/registrationlayout.css";
+import "../../Styling/membertierpage.css";
+import logo from "../../assets/images/discgolf_logo.png";
 
 // Copy the exact text from Figma. The descriptions were too small to read in the screenshot.
 const TIERS = [
@@ -11,12 +11,12 @@ const TIERS = [
     price: "R0",
     description: "", // TODO: paste description from Figma
     perks: ["Register for Tournaments"],
-    cta: "Sign up as a member", // label as it appears in the design
+    cta: "Continue",
   },
   {
     id: "member",
     name: "DGSA Member",
-    price: "R375", // the payment screen shows R370: confirm which is correct
+    price: "R370",
     description: "", // TODO: paste description from Figma
     perks: [
       "Register for Tournaments",
@@ -24,7 +24,7 @@ const TIERS = [
       "Access to DGSA Exclusive Merchandise",
       "Priority Registration",
     ],
-    cta: "Sign up as a member",
+    cta: "Choose membership",
   },
 ];
 

@@ -1,0 +1,504 @@
+/* Shared controls used by the authentication, membership, and registration flows. */
+.reg-input,
+.memberPaymentInput,
+.regplayerInputPage,
+.regplayerInputDetailsPage {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: 0.7rem 0.85rem;
+  box-sizing: border-box;
+  color: var(--white);
+  background: rgba(6, 22, 51, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  border-radius: 0.35rem;
+}
+
+.reg-input::placeholder,
+.memberPaymentInput::placeholder,
+.regplayerInputPage::placeholder,
+.regplayerInputDetailsPage::placeholder {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.reg-input:focus,
+.memberPaymentInput:focus,
+.regplayerInputPage:focus,
+.regplayerInputDetailsPage:focus {
+  color: var(--white);
+  background: rgba(6, 22, 51, 0.35);
+  border-color: var(--orange);
+  box-shadow: 0 0 0 0.2rem rgba(255, 158, 0, 0.25);
+}
+
+.reg-input option,
+.regplayerInputPage option,
+.regplayerInputDetailsPage option {
+  color: var(--white);
+  background: var(--navy);
+}
+
+.reg-input.form-select,
+.regplayerInputPage.form-select,
+.regplayerInputDetailsPage.form-select {
+  color: var(--white);
+  background-color: rgba(6, 22, 51, 0.72);
+  background-position: right 0.85rem center;
+  color-scheme: dark;
+}
+
+.reg-input.form-select:focus,
+.regplayerInputPage.form-select:focus,
+.regplayerInputDetailsPage.form-select:focus {
+  color: var(--white);
+  background-color: rgba(6, 22, 51, 0.92);
+}
+
+.reg-page .form-select,
+.regplayerLayout .form-select,
+.loginLayoutPage .form-select,
+.signupLayoutPage .form-select,
+.memberPaymentLayoutPage .form-select {
+  color: var(--white) !important;
+  background-color: var(--navy) !important;
+  border-color: rgba(255, 255, 255, 0.58) !important;
+  color-scheme: dark;
+}
+
+.reg-page .form-select option,
+.regplayerLayout .form-select option,
+.loginLayoutPage .form-select option,
+.signupLayoutPage .form-select option,
+.memberPaymentLayoutPage .form-select option {
+  color: var(--white);
+  background-color: var(--navy);
+}
+
+.regplayerContentLayout > *,
+.loginContentPage > *,
+.signupContentPage > *,
+.memberPaymentContentPage > * {
+  max-width: 100%;
+}
+
+.memberPaymentLayoutPage,
+.memberPaymentLayoutPage .form-control,
+.memberPaymentLayoutPage .form-select {
+  color: var(--white) !important;
+}
+
+.memberPaymentLayoutPage {
+  background: rgba(6, 22, 51, 0.84);
+}
+
+.memberPaymentLayoutPage .memberPaymentSummary {
+  color: var(--white);
+  background: rgba(8, 51, 125, 0.34);
+}
+
+.memberPaymentLayoutPage .memberPaymentInput {
+  color: var(--white) !important;
+  background-color: rgba(6, 22, 51, 0.62) !important;
+  border-color: rgba(255, 255, 255, 0.58) !important;
+}
+
+.memberPaymentLayoutPage .memberPaymentInput::placeholder {
+  color: rgba(255, 255, 255, 0.72) !important;
+}
+
+.memberPaymentLayoutPage .memberPaymentInput:focus {
+  color: var(--white) !important;
+  background-color: rgba(6, 22, 51, 0.85) !important;
+  border-color: var(--orange) !important;
+}
+
+.memberPaymentLayoutPage .memberPaymentButton {
+  color: var(--navy) !important;
+  background: var(--orange) !important;
+  border-color: var(--orange) !important;
+}
+
+@media (max-width: 800px) {
+  .memberPaymentLayoutPage .memberPaymentSummary {
+    margin-right: 0;
+    margin-left: 0;
+    display: block;
+  }
+
+  .memberPaymentLayoutPage .mpay__details div {
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+
+  .memberPaymentLayoutPage .mpay__details dt,
+  .memberPaymentLayoutPage .mpay__details dd {
+    overflow-wrap: anywhere;
+  }
+
+  .memberPaymentLayoutPage .memberPaymentSummary > .col {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .memberPaymentLayoutPage .memberPaymentSummary > .mpay__amount {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    align-items: flex-start;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .memberPaymentLayoutPage .mpay__amount {
+    align-items: flex-start;
+  }
+}
+
+.reg-card,
+.tier-card,
+.newev__panel,
+.newev__card,
+.registrationConfirmation__card {
+  color: var(--white);
+  background: rgba(6, 22, 51, 0.84);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.reg-card .card-body,
+.tier-card .card-body {
+  color: var(--white);
+}
+
+.tier-card {
+  --bs-card-bg: rgba(6, 22, 51, 0.92);
+  --bs-card-color: var(--white);
+  --bs-card-border-color: rgba(255, 255, 255, 0.2);
+}
+
+.tier-card__name,
+.tier-card__amount,
+.tier-card__desc {
+  color: var(--white);
+}
+
+.tier-card__name,
+.tier-card__amount,
+.reg-title,
+.newev__title,
+.registrationConfirmation h1 {
+  color: var(--orange);
+}
+
+.tier-card__desc {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.reg-page .form-label,
+.reg-page .form-text,
+.regplayerLayout .form-label,
+.regplayerLayout .form-text,
+.loginLayoutPage .form-label,
+.signupLayoutPage .form-label {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.reg-page .alert,
+.regplayerLayout .alert,
+.loginLayoutPage .alert,
+.signupLayoutPage .alert {
+  color: var(--white);
+  background: rgba(8, 51, 125, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.dash__content,
+.dash__content .row,
+.dash__content [class*="col-"] {
+  min-width: 0;
+}
+
+.dash__content .form-control,
+.dash__content .form-select,
+.dash__content .dropdown,
+.dash__content .dropdown-toggle {
+  max-width: 100%;
+}
+
+.dash__content .form-control,
+.dash__content .form-select {
+  border-color: rgba(255, 255, 255, 0.55);
+  background-color: rgba(6, 22, 51, 0.42);
+  color: var(--white);
+}
+
+.dash__content .form-select {
+  padding-right: 2.5rem;
+  color-scheme: dark;
+}
+
+.dash__content .form-select option {
+  color: var(--white);
+  background: var(--navy);
+}
+
+.dash__content .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.dash__content .form-control:focus,
+.dash__content .form-select:focus {
+  color: var(--white);
+  background-color: rgba(6, 22, 51, 0.72);
+  border-color: var(--orange);
+  box-shadow: 0 0 0 0.2rem rgba(255, 158, 0, 0.25);
+}
+
+.dash__content .dropdown-menu {
+  max-width: min(18rem, calc(100vw - 2rem));
+  padding: 0.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 0.65rem;
+  background: var(--navy) !important;
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.35);
+  overflow-wrap: anywhere;
+}
+
+.dash__content .dropdown-item {
+  border-radius: 0.4rem;
+  color: var(--white) !important;
+  background: transparent !important;
+}
+
+.dash__content .dropdown-item:hover,
+.dash__content .dropdown-item:focus,
+.dash__content .dropdown-item.active,
+.dash__content .dropdown-item:active {
+  color: var(--navy) !important;
+  background: var(--orange) !important;
+}
+
+.dash__content .dropdown-divider {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.dash__content .dropdown-toggle {
+  color: var(--navy);
+}
+
+.dash-card__head > div {
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
+.event-chip {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reg-search.form-control {
+  min-width: 7rem;
+  max-width: 10rem;
+}
+
+.dash__content .table-responsive {
+  max-width: 100%;
+}
+
+.dash-card {
+  --bs-card-bg: rgba(6, 22, 51, 0.88) !important;
+  --bs-card-color: var(--white) !important;
+  --bs-card-border-color: rgba(255, 255, 255, 0.2) !important;
+  color: var(--white) !important;
+  background: rgba(6, 22, 51, 0.88) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.dash-card .card-body {
+  color: var(--white) !important;
+}
+
+.dash-card__title {
+  color: var(--orange);
+}
+
+.dash-table {
+  --bs-table-color: var(--white) !important;
+  --bs-table-striped-color: var(--white) !important;
+  --bs-table-hover-color: var(--white) !important;
+  --bs-table-border-color: rgba(255, 255, 255, 0.16) !important;
+  color: var(--white) !important;
+}
+
+.dash-table thead th {
+  color: var(--orange);
+  background: rgba(6, 22, 51, 0.96);
+}
+
+.dash-table tbody td {
+  color: var(--white) !important;
+  background: transparent;
+}
+
+.dash-table tbody tr:hover td {
+  color: var(--white);
+  background: rgba(255, 158, 0, 0.12);
+}
+
+.dash-empty {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.dash-card .btn-link,
+.dash-icon-btn {
+  color: var(--orange);
+}
+
+.dash-card .btn-link:hover,
+.dash-card .btn-link:focus-visible,
+.dash-icon-btn:hover,
+.dash-icon-btn:focus-visible {
+  color: var(--peach);
+}
+
+.dash__content > .alert {
+  color: var(--white);
+  background: rgba(8, 51, 125, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.reg-link {
+  padding: 0;
+  color: var(--orange);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.reg-link:hover,
+.reg-link:focus-visible {
+  color: var(--peach);
+}
+
+.regplayerLayout,
+.loginLayoutPage,
+.signupLayoutPage,
+.memberPaymentLayoutPage {
+  position: relative;
+  z-index: 1;
+  transition: width 180ms ease, padding 180ms ease, border-radius 180ms ease;
+}
+
+.reg-page {
+  position: relative;
+  z-index: 1;
+}
+
+.dash__content > .card {
+  overflow: hidden;
+}
+
+.dash__content > .card h2 {
+  margin-bottom: 1.25rem;
+  color: var(--dash-navy);
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.dash__content > .card .btn:not(.btn-link) {
+  border-color: var(--orange);
+  background: var(--orange);
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.dash__content > .card .btn:not(.btn-link):hover,
+.dash__content > .card .btn:not(.btn-link):focus-visible {
+  border-color: var(--peach);
+  background: var(--peach);
+  color: var(--navy);
+}
+
+.dash__content .alert {
+  border: 0;
+  border-radius: 0.6rem;
+}
+
+.dash--admin .dash-search-wrap,
+.dash--admin .dash-search.form-control {
+  color: var(--white);
+}
+
+.dash--admin .dash-search.form-control {
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.dash--admin .dash-search.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@media (max-width: 600px) {
+  .regplayerChoicePage {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .memberPaymentSummary {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .regplayerContentLayout,
+  .loginContentPage,
+  .signupContentPage,
+  .memberPaymentContentPage {
+    width: 100%;
+  }
+
+  .dash__content .card-body {
+    padding: 0.85rem;
+  }
+
+  .dash-card__head {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .dash-card__head > div {
+    width: 100%;
+  }
+
+  .reg-search.form-control {
+    flex: 1 1 8rem;
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .regplayerLayout,
+  .loginLayoutPage,
+  .signupLayoutPage,
+  .memberPaymentLayoutPage {
+    width: calc(100% - 1rem);
+    margin: 0.5rem auto;
+    border-radius: 1rem;
+  }
+
+  .regplayerTitleLayout,
+  .loginTitlePage,
+  .signupTitlePage,
+  .memberPaymentTitlePage {
+    font-size: clamp(2.25rem, 14vw, 3.25rem);
+  }
+
+  .dash__main {
+    padding: 12px;
+  }
+}
