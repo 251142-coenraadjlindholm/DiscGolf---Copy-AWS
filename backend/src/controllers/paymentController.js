@@ -6,6 +6,7 @@ import User from "../models/User.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { PAYMENT_STATUSES, PROOFS_DIR } from "../config/constants.js";
 import { createMembershipId } from "../utils/membership.js";
+import Upload from "../models/Upload.js";
 
 // GET /api/admin/payments  (Live Payment Feed)
 export const adminList = asyncHandler(async (req, res) => {
@@ -63,9 +64,14 @@ export const proof = asyncHandler(async (req, res) => {
   try {
     await fs.access(proofPath);
   } catch {
-    return res.status(404).json({
-      message: "This proof file is no longer available on the server. Please upload the proof again.",
-    });
+    const upload = await Upload.findOne({ filename: payment.proofFile, kind: "proof" }).select("contentType data");
+    if (!upload) {
+      return res.status(404).json({
+        message: "This proof file is no longer available. Please upload the proof again.",
+      });
+    }
+    res.type(upload.contentType).send(upload.data);
+    return;
   }
 
   res.sendFile(proofPath, (err) => {

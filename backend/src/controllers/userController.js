@@ -5,6 +5,7 @@ import { reject } from "../utils/respond.js";
 import { asString, isEmail, hasDigits, isZip } from "../utils/validators.js";
 import { DIVISIONS, MEMBERSHIP_FEE } from "../config/constants.js";
 import { createMembershipId } from "../utils/membership.js";
+import { storeUpload } from "../utils/storeUpload.js";
 
 // GET /api/users/lookup?email=   (logged-in users registering other players)
 export const lookupByEmail = asyncHandler(async (req, res) => {
@@ -61,6 +62,7 @@ export const submitMembership = asyncHandler(async (req, res) => {
 
   Object.assign(req.user, { gender, dob: dobDate, saId, passport, mobile, usualDivision, address });
   await req.user.save();
+  await storeUpload(req.file, "proof");
 
   await Payment.create({
     user: req.user._id,

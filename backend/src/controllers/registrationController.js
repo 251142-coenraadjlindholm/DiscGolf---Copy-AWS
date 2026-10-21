@@ -7,6 +7,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { reject } from "../utils/respond.js";
 import { asString, isEmail } from "../utils/validators.js";
 import { DIVISIONS, MAX_REGISTRANTS } from "../config/constants.js";
+import { storeUpload } from "../utils/storeUpload.js";
 
 // POST /api/events/:eventId/registrations
 // multipart: proof (file) + registrants (JSON string: [{ email, membershipId?, division? }])
@@ -68,6 +69,7 @@ export const create = asyncHandler(async (req, res) => {
     amount,
     proofFile: req.file.filename,
   });
+  await storeUpload(req.file, "proof");
 
   try {
     await Registration.insertMany(

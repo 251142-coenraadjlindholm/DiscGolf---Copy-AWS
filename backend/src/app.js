@@ -8,6 +8,7 @@ import routes from "./routes/index.js";
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
 import { POSTERS_DIR } from "./config/constants.js";
 import Event from "./models/Event.js";
+import Upload from "./models/Upload.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -29,6 +30,15 @@ app.use(cookieParser());
 
 // Posters are public. Proofs of payment are NOT served statically: see GET /api/payments/:id/proof
 app.use("/uploads/posters", express.static(POSTERS_DIR, { maxAge: "7d" }));
+app.get("/uploads/posters/:filename", async (req, res, next) => {
+  try {
+    const upload = await Upload.findOne({ filename: req.params.filename, kind: "poster" }).select("contentType data");
+    if (!upload) return res.status(404).json({ message: "Poster not found." });
+    res.type(upload.contentType).set("Cache-Control", "public, max-age=604800").send(upload.data);
+  } catch (error) {
+    next(error);
+  }
+});
 
 app.use("/api", routes);
 
