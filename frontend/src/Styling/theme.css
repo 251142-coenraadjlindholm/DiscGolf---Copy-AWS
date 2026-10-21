@@ -124,15 +124,36 @@
   .memberPaymentLayoutPage .memberPaymentSummary {
     margin-right: 0;
     margin-left: 0;
+    display: block;
   }
 
   .memberPaymentLayoutPage .mpay__details div {
     flex-wrap: wrap;
+    min-width: 0;
+  }
+
+  .memberPaymentLayoutPage .mpay__details dt,
+  .memberPaymentLayoutPage .mpay__details dd {
+    overflow-wrap: anywhere;
+  }
+
+  .memberPaymentLayoutPage .memberPaymentSummary > .col {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .memberPaymentLayoutPage .memberPaymentSummary > .mpay__amount {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    align-items: flex-start;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
   }
 
   .memberPaymentLayoutPage .mpay__amount {
     align-items: flex-start;
-    margin-top: 1rem;
   }
 }
 
