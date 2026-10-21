@@ -43,6 +43,7 @@ export default function AdminDashboardPage() {
   const [error, setError] = useState("");
   const [proofPreview, setProofPreview] = useState(null);
   const [proofAsset, setProofAsset] = useState({ status: "idle", url: "", type: "" });
+  const [proofError, setProofError] = useState("");
 
   const loadMembers = useCallback(async () => {
     const r = await getAdminMembers();
@@ -94,11 +95,13 @@ export default function AdminDashboardPage() {
   const openProof = (payment) => {
     setProofPreview({ id: payment.id, name: payment.name });
     setProofAsset({ status: "loading", url: "", type: "" });
+    setProofError("");
   };
 
   useEffect(() => {
     if (!proofPreview) {
       setProofAsset({ status: "idle", url: "", type: "" });
+      setProofError("");
       return undefined;
     }
 
@@ -107,16 +110,20 @@ export default function AdminDashboardPage() {
     fetch(proofUrl(proofPreview.id), { credentials: "include" })
       .then(async (response) => {
         if (!response.ok) {
-          throw new Error("The proof of payment could not be loaded.");
+          const body = await response.json().catch(() => ({}));
+          throw new Error(body.message || `The proof of payment could not be loaded (${response.status}).`);
         }
         const blob = await response.blob();
+        if (!blob.type.startsWith("image/") && blob.type !== "application/pdf") {
+          throw new Error("The uploaded proof is not a supported image or PDF.");
+        }
         objectUrl = URL.createObjectURL(blob);
         if (alive) setProofAsset({ status: "ready", url: objectUrl, type: blob.type });
       })
       .catch((loadError) => {
         if (alive) {
           setProofAsset({ status: "error", url: "", type: "" });
-          setError(loadError.message);
+          setProofError(loadError.message);
         }
       });
 
@@ -327,7 +334,7 @@ export default function AdminDashboardPage() {
               {proofAsset.status === "loading" && <p className="proof-preview__status">Loading proof…</p>}
               {proofAsset.status === "error" && (
                 <p className="proof-preview__status proof-preview__status--error">
-                  Unable to load this proof of payment.
+                  {proofError || "Unable to load this proof of payment."}
                 </p>
               )}
               {proofAsset.status === "ready" && proofAsset.type === "application/pdf" && (

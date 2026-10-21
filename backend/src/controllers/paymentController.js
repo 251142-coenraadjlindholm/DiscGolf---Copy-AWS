@@ -1,4 +1,5 @@
 import path from "node:path";
+import fs from "node:fs/promises";
 import mongoose from "mongoose";
 import Payment from "../models/Payment.js";
 import User from "../models/User.js";
@@ -57,8 +58,17 @@ export const proof = asyncHandler(async (req, res) => {
   const isOwner = payment.user.equals(req.user._id);
   if (req.user.role !== "admin" && !isOwner) return res.status(403).json({ message: "Not allowed." });
 
-  // The file name comes from the database, never from the request
-  res.sendFile(path.join(PROOFS_DIR, payment.proofFile), (err) => {
-    if (err && !res.headersSent) res.status(404).json({ message: "File not found." });
+  // The file name comes from the database, never from the request.
+  const proofPath = path.join(PROOFS_DIR, payment.proofFile);
+  try {
+    await fs.access(proofPath);
+  } catch {
+    return res.status(404).json({
+      message: "This proof file is no longer available on the server. Please upload the proof again.",
+    });
+  }
+
+  res.sendFile(proofPath, (err) => {
+    if (err && !res.headersSent) res.status(404).json({ message: "Unable to send the proof file." });
   });
 });
