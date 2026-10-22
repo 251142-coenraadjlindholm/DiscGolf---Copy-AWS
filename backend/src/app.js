@@ -11,6 +11,7 @@ import Event from "./models/Event.js";
 import Upload from "./models/Upload.js";
 
 const app = express();
+app.set("trust proxy", 2);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const frontendBuildPath = path.join(__dirname, "../../frontend/build");
