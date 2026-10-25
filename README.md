@@ -73,8 +73,6 @@ and payment statuses.
     │   ├── build/               Generated production build
     │   └── package.json
     ├── .platform/               Elastic Beanstalk configuration
-    ├── scripts/
-    │   └── package-deploy.ps1   Creates the deployment ZIP
     ├── package.json
     └── Procfile
 
@@ -146,7 +144,6 @@ The React development server runs at
 | `npm start --prefix frontend` | Start the React development server |
 | `npm test --prefix frontend` | Run the frontend test suite |
 | `npm run build --prefix frontend` | Build the React app |
-| `npm run package:deploy` | Create `deploy.zip` for Elastic Beanstalk |
 
 ## Frontend routes
 
@@ -206,22 +203,15 @@ The `Procfile` starts the backend with:
 
 ### Build and package
 
-Build the frontend and create the deployment archive:
+Build the frontend:
 
     npm run build
-    npm run package:deploy
 
-The packaging script creates `deploy.zip` with:
-
-- `package.json` and `package-lock.json`
-- `backend/`
-- `frontend/build/`
-- `.platform/`
-
-It excludes `backend/.env` and backend `node_modules`, uses POSIX paths inside
-the ZIP, and validates the archive before completing.
-
-Upload `deploy.zip` to AWS Elastic Beanstalk. Configure the environment with
+After building, create a deployment archive using your approved deployment
+process, including `package.json`, `package-lock.json`, `backend/`,
+`frontend/build/`, and `.platform/`. Do not include `backend/.env` or
+backend `node_modules`. Upload the resulting archive to AWS Elastic Beanstalk.
+Configure the environment with
 the following variables:
 
 | Variable | Purpose |
@@ -267,9 +257,7 @@ In production, Express serves the React build and falls back to
    `npm test --prefix frontend -- --watchAll=false`
 2. Build the frontend:
    `npm run build`
-3. Create the deployment archive:
-   `npm run package:deploy`
-4. Confirm that `deploy.zip` contains no backslash paths.
-5. Confirm that `backend/.env` is not in the archive.
-6. Configure the Elastic Beanstalk environment variables.
-7. Upload `deploy.zip` and invalidate CloudFront if necessary.
+3. Create the deployment archive using your approved deployment process.
+4. Confirm that `backend/.env` is not in the archive.
+5. Configure the Elastic Beanstalk environment variables.
+6. Upload the archive and invalidate CloudFront if necessary.
